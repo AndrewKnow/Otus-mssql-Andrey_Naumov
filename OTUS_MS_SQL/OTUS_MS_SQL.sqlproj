@@ -57,8 +57,10 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="HW_2" />
+    <Folder Include="HW_3" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HW_2\HW_2.sql" />
+    <None Include="HW_3\HW_3.sql" />
   </ItemGroup>
 </Project>
