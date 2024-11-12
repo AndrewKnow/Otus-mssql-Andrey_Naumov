@@ -18,7 +18,7 @@ month(a.InvoiceDate) [Месяц продажи],
 avg(b.UnitPrice ) [Средняя цена за месяц по всем товарам],
 sum(b.ExtendedPrice) [Общая сумма продаж за месяц]
 From Sales.Invoices a 
-Left join Sales.InvoiceLines b on a.InvoiceID = b.InvoiceID
+Inner join Sales.InvoiceLines b on a.InvoiceID = b.InvoiceID
 Group by year(a.InvoiceDate), month(a.InvoiceDate)
 Order by 1, 2
 
@@ -38,7 +38,7 @@ year(a.InvoiceDate) [Год продажи],
 month(a.InvoiceDate) [Месяц продажи],
 sum(b.ExtendedPrice) [Общая сумма продаж за месяц]
 From Sales.Invoices a 
-Left join Sales.InvoiceLines b on a.InvoiceID = b.InvoiceID
+Inner join Sales.InvoiceLines b on a.InvoiceID = b.InvoiceID
 Group by year(a.InvoiceDate), month(a.InvoiceDate)
 Having sum(b.ExtendedPrice) > 4600000
 Order by 1, 2
@@ -68,7 +68,7 @@ sum(b.ExtendedPrice) [Cумма продаж],
 min(a.InvoiceDate) as [Дата первой продажи],
 sum(b.Quantity) as [Количество проданного]
 From Sales.Invoices a 
-Left join Sales.InvoiceLines b on a.InvoiceID=b.InvoiceID
+Inner join Sales.InvoiceLines b on a.InvoiceID=b.InvoiceID
 Group by year(a.InvoiceDate), month(a.InvoiceDate), b.Description
 Having sum(b.Quantity) < 50
 Order by 1, 2, 3
