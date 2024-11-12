@@ -64,20 +64,12 @@ Select
 year(a.InvoiceDate) [Год продажи], 
 month(a.InvoiceDate) [Месяц продажи],
 b.Description [Наименование товара],
-sum(b.Quantity * b.UnitPrice) [Cумма продаж],
+sum(b.ExtendedPrice) [Cумма продаж],
 min(a.InvoiceDate) as [Дата первой продажи],
 sum(b.Quantity) as [Количество проданного]
 From Sales.Invoices a 
 Left join Sales.InvoiceLines b on a.InvoiceID=b.InvoiceID
 Group by year(a.InvoiceDate), month(a.InvoiceDate), b.Description
 Having sum(b.Quantity) < 50
-Order by 1,2,3
+Order by 1, 2, 3
 
-
--- ---------------------------------------------------------------------------
--- Опционально
--- ---------------------------------------------------------------------------
-/*
-Написать запросы 2-3 так, чтобы если в каком-то месяце не было продаж,
-то этот месяц также отображался бы в результатах, но там были нули.
-*/
