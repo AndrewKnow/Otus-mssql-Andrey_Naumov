@@ -83,10 +83,10 @@ Group by CustomerID,CustomerName
 который осуществлял упаковку заказов (PackedByPersonID).
 */
 
-Select top 1 * From Application.Cities
-Select top 1 * From Application.People
-Select top 1 * From Warehouse.StockItems
-Select top 1 * from Sales.Invoices
+Select Top 1 * From Application.Cities
+Select Top 1 * From Application.People
+Select Top 1 * From Warehouse.StockItems
+Select Top 1 * from Sales.Invoices
 
 
 
