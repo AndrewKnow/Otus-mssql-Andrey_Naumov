@@ -86,8 +86,9 @@ Group by CustomerID,CustomerName
 ;With StockItemIDcte as (Select top 3 StockItemID From Warehouse.StockItems Group by StockItemID  Order by max(UnitPrice) desc, StockItemID)
 
 Select 
-distinct b.PostalCityID, c.CityName From Sales.Invoices a 
+distinct b.PostalCityID, c.CityName, e.FullName From Sales.Invoices a 
 Join Sales.Customers b on a.CustomerID = b.CustomerID
 Join Application.Cities c on c.CityID = b.PostalCityID
 Join Sales.OrderLines d on d.OrderID = a.OrderID 
-Where d.StockItemID IN (Select StockItemID From StockItemIDcte)
+Join Application.People e on a.PackedByPersonID = e.PersonID
+Where d.StockItemID IN (Select StockItemID FROM StockItemIDcte)  
