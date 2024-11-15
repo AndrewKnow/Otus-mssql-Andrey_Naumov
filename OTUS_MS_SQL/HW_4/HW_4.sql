@@ -83,12 +83,11 @@ Group by CustomerID,CustomerName
 который осуществлял упаковку заказов (PackedByPersonID).
 */
 
-Select Top 1 * From Application.Cities
-Select Top 1 * From Application.People
-Select Top 1 * From Warehouse.StockItems
-Select Top 1 * from Sales.Invoices
+;With StockItemIDcte as (Select top 3 StockItemID From Warehouse.StockItems Group by StockItemID  Order by max(UnitPrice) desc, StockItemID)
 
-
-
-Select Top 3 StockItemID, StockItemName, SupplierID, UnitPrice From Warehouse.StockItems  Order by UnitPrice desc;
-
+Select 
+distinct b.PostalCityID, c.CityName From Sales.Invoices a 
+Join Sales.Customers b on a.CustomerID = b.CustomerID
+Join Application.Cities c on c.CityID = b.PostalCityID
+Join Sales.OrderLines d on d.OrderID = a.OrderID 
+Where d.StockItemID IN (Select StockItemID FROM StockItemIDcte)
