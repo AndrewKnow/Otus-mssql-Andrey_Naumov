@@ -89,9 +89,9 @@ Join Sales.Customers b on a.CustomerID = b.CustomerID
 Join Application.Cities c on c.CityID = b.PostalCityID
 Join Sales.OrderLines d on d.OrderID = a.OrderID 
 Join Application.People e on a.PackedByPersonID = e.PersonID
-Where d.StockItemID = ANY (Select top 3 StockItemID From Warehouse.StockItems Group by StockItemID  Order by max(UnitPrice) desc, StockItemID)  
+Where d.StockItemID = ANY (Select top 3 with ties StockItemID From Warehouse.StockItems Group by StockItemID  Order by max(UnitPrice) desc)  
 
-;With StockItemIDcte as (Select top 3 StockItemID From Warehouse.StockItems Group by StockItemID  Order by max(UnitPrice) desc, StockItemID)
+;With StockItemIDcte as (Select top 3 with ties StockItemID From Warehouse.StockItems Group by StockItemID  Order by max(UnitPrice) desc)
 Select 
 distinct b.PostalCityID, c.CityName, e.FullName From Sales.Invoices a 
 Join Sales.Customers b on a.CustomerID = b.CustomerID
@@ -100,7 +100,7 @@ Join Sales.OrderLines d on d.OrderID = a.OrderID
 Join Application.People e on a.PackedByPersonID = e.PersonID
 Join StockItemIDcte f on d.StockItemID = f.StockItemID
 
-;With StockItemIDcte as (Select top 3 StockItemID From Warehouse.StockItems Group by StockItemID  Order by max(UnitPrice) desc, StockItemID)
+;With StockItemIDcte as (Select top 3 with ties StockItemID From Warehouse.StockItems Group by StockItemID  Order by max(UnitPrice) desc)
 
 Select 
 distinct b.PostalCityID, c.CityName, e.FullName From Sales.Invoices a 
