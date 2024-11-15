@@ -90,4 +90,4 @@ distinct b.PostalCityID, c.CityName From Sales.Invoices a
 Join Sales.Customers b on a.CustomerID = b.CustomerID
 Join Application.Cities c on c.CityID = b.PostalCityID
 Join Sales.OrderLines d on d.OrderID = a.OrderID 
-Where d.StockItemID IN (Select StockItemID FROM StockItemIDcte)
+Where d.StockItemID IN (Select StockItemID From StockItemIDcte)
