@@ -39,3 +39,18 @@ set statistics time OFF;
 set statistics io OFF;
 --Сравните производительность запросов 1 и 2 с помощью set statistics time, io on
 --Время ЦП без оконной функции = 1562 мс, затраченное время = 9813 мс. > Время ЦП с помощью оконной функции = 92 мс, затраченное время = 38 мс.
+
+
+--Вывести список 2х самых популярных продуктов (по количеству проданных)
+--в каждом месяце за 2016 год (по 2 самых популярных продукта в каждом месяце).
+;With cteQuantity as (
+Select year(b.InvoiceDate) год, month(b.InvoiceDate) месяц, a.Description, sum(a.Quantity) количество,
+row_number() over (partition by year(b.InvoiceDate), month(b.InvoiceDate) Order by sum(a.Quantity) desc) as популярность
+From Sales.InvoiceLines a Inner join Sales.Invoices b ON a.InvoiceID = b.InvoiceID
+Where b.InvoiceDate >= '2016-01-01' 
+Group by year(b.InvoiceDate), month(b.InvoiceDate), a.Description)
+
+Select * From cteQuantity a
+Where a.популярность <= 2
+Order by a.год, a.месяц
+  
