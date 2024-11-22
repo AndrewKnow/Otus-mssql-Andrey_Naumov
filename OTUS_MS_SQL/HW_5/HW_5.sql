@@ -15,7 +15,7 @@ Select
 cte.год,
 cte.месяц,
 cte.продажи,  
-(Select sum(продажи) FROM cte cte2 WHERE cte2.год < cte.год or (cte2.год = cte.год AND cte2.месяц <= cte.месяц)) [нарастающий итог]  
+(Select sum(продажи) FROM cte a WHERE a.год < cte.год or (a.год = cte.год AND a.месяц <= cte.месяц)) [нарастающий итог]  
 From cte
 Order by cte.год, cte.месяц;
 
