@@ -59,10 +59,12 @@
     <Folder Include="HW_2" />
     <Folder Include="HW_3" />
     <Folder Include="HW_4" />
+    <Folder Include="HW_5" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HW_2\HW_2.sql" />
     <None Include="HW_3\HW_3.sql" />
     <None Include="HW_4\HW_4.sql" />
+    <None Include="HW_5\HW_5.sql" />
   </ItemGroup>
 </Project>
