@@ -110,3 +110,31 @@ lag(StockItemID) over (Order by StockItemName) [предыдущий id],
 lag(StockItemName, 2, 'No items') over (Order by StockItemName) [Названия товара 2 строки назад],
 ntile(30) over (Order by TypicalWeightPerUnit) [Группа товаров по полю вес]
 From [Warehouse].[StockItems];
+
+
+/*
+5. По каждому сотруднику выведите последнего клиента, которому сотрудник что-то продал.
+   В результатах должны быть ид и фамилия сотрудника, ид и название клиента, дата продажи, сумму сделки.
+*/
+
+
+;With cteSales as (
+Select 
+a.SalespersonPersonID,
+b.FullName,
+c.CustomerID,
+c.CustomerName,
+a.InvoiceDate,
+sum(d.ExtendedPrice) [сумма сделки],
+row_number() over (partition by a.SalespersonPersonID Order by a.InvoiceDate desc) [нумерация сделок]
+From Sales.Invoices a
+Join Application.People b on b.PersonID = a.SalespersonPersonID
+Join Sales.Customers c on c.CustomerID = a.CustomerID 
+Join Sales.InvoiceLines d on d.InvoiceID = a.InvoiceID 
+Group by a.SalespersonPersonID, b.FullName, c.CustomerID, c.CustomerName, a.InvoiceDate)
+
+Select 
+cteSales.*
+From cteSales 
+Where [нумерация сделок] = 1 
+Order by cteSales.SalespersonPersonID;
