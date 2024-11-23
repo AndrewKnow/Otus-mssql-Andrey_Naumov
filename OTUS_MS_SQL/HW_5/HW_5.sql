@@ -22,7 +22,7 @@ USE WideWorldImporters
 set statistics time ON;
 set statistics io ON;
 
-;With DataCTE as
+;With cteExtendedPrice as
 (Select a.InvoiceID, с.CustomerName, a.InvoiceDate, sum(b.ExtendedPrice) [сумма продажи]
 	From Sales.Invoices a 
 	Join Sales.InvoiceLines b ON a.InvoiceID = b.InvoiceID
@@ -31,20 +31,20 @@ set statistics io ON;
 	Group by a.InvoiceID, с.CustomerName, a.InvoiceDate)
 
 Select 
-DataCTE.InvoiceID [id продажи],
-DataCTE.CustomerName [название клиента],
-DataCTE.InvoiceDate [дата продажи],  
-DataCTE.[сумма продажи],
-(Select sum([сумма продажи]) FROM DataCTE cte2 WHERE month(DataCTE.InvoiceDate) = month(cte2.InvoiceDate) and year(DataCTE.InvoiceDate) = year(cte2.InvoiceDate)) [сумма нарастающим итогом]  
-From DataCTE
-Order by DataCTE.InvoiceDate;
+cteExtendedPrice.InvoiceID [id продажи],
+cteExtendedPrice.CustomerName [название клиента],
+cteExtendedPrice.InvoiceDate [дата продажи],  
+cteExtendedPrice.[сумма продажи],
+(Select sum([сумма продажи]) FROM cteExtendedPrice cte2 WHERE month(cteExtendedPrice.InvoiceDate) = month(cte2.InvoiceDate) and year(cteExtendedPrice.InvoiceDate) = year(cte2.InvoiceDate)) [сумма нарастающим итогом]  
+From cteExtendedPrice
+Order by cteExtendedPrice.InvoiceDate;
 
 /*
 2. Сделайте расчет суммы нарастающим итогом в предыдущем запросе с помощью оконной функции.
    Сравните производительность запросов 1 и 2 с помощью set statistics time, io on
 */
 
-;With DataCTE as
+;With cteExtendedPrice as
 (Select a.InvoiceID, с.CustomerName, a.InvoiceDate, sum(b.ExtendedPrice) [сумма продажи]
 	From Sales.Invoices a 
 	Join Sales.InvoiceLines b ON a.InvoiceID = b.InvoiceID
@@ -52,13 +52,13 @@ Order by DataCTE.InvoiceDate;
 	Where a.InvoiceDate >= '2015-01-01'  
 	Group by a.InvoiceID, с.CustomerName, a.InvoiceDate)
 Select 
-DataCTE.InvoiceID [id продажи],
-DataCTE.CustomerName [название клиента],
-DataCTE.InvoiceDate [дата продажи],  
-DataCTE.[сумма продажи],
-sum(DataCTE.[сумма продажи]) over (Order by year(DataCTE.InvoiceDate), month(DataCTE.InvoiceDate)) [сумма нарастающим итогом] 
-From DataCTE
-Order by DataCTE.InvoiceDate;
+cteExtendedPrice.InvoiceID [id продажи],
+cteExtendedPrice.CustomerName [название клиента],
+cteExtendedPrice.InvoiceDate [дата продажи],  
+cteExtendedPrice.[сумма продажи],
+sum(cteExtendedPrice.[сумма продажи]) over (Order by year(cteExtendedPrice.InvoiceDate), month(cteExtendedPrice.InvoiceDate)) [сумма нарастающим итогом] 
+From cteExtendedPrice
+Order by cteExtendedPrice.InvoiceDate;
 
 set statistics time OFF;
 set statistics io OFF;
@@ -68,7 +68,6 @@ set statistics io OFF;
 
 -- С оконной функции
 --> Время ЦП = 94 мс, затраченное время = 281 мс.
-
 
 /*
 3. Вывести список 2х самых популярных продуктов (по количеству проданных) 
@@ -111,12 +110,10 @@ lag(StockItemName, 2, 'No items') over (Order by StockItemName) [Названи�
 ntile(30) over (Order by TypicalWeightPerUnit) [Группа товаров по полю вес]
 From [Warehouse].[StockItems];
 
-
 /*
 5. По каждому сотруднику выведите последнего клиента, которому сотрудник что-то продал.
    В результатах должны быть ид и фамилия сотрудника, ид и название клиента, дата продажи, сумму сделки.
 */
-
 
 ;With cteSales as (
 Select 
@@ -138,3 +135,23 @@ cteSales.*
 From cteSales 
 Where [нумерация сделок] = 1 
 Order by cteSales.SalespersonPersonID;
+
+/*
+6. Выберите по каждому клиенту два самых дорогих товара, которые он покупал.
+В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
+*/
+;With cteCustomers as (
+Select 
+b.CustomerID,
+b.CustomerName,
+c.StockItemID,
+c.UnitPrice,
+a.InvoiceDate,
+row_number() over (partition by b.CustomerID Order by c.UnitPrice desc) [нумерация товаров]
+From Sales.Invoices a
+Join Sales.Customers b on b.CustomerID = a.CustomerID 
+Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID )
+
+Select * From cteCustomers
+WHERE cteCustomers.[нумерация товаров] <= 2 
+Order by cteCustomers.CustomerID
