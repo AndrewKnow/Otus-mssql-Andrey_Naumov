@@ -24,11 +24,11 @@ set statistics io ON;
 
 ;With cteExtendedPrice as
 (Select a.InvoiceID, с.CustomerName, a.InvoiceDate, sum(b.ExtendedPrice) [сумма продажи]
-	From Sales.Invoices a 
-	Join Sales.InvoiceLines b ON a.InvoiceID = b.InvoiceID
-	Join Sales.Customers с ON a.CustomerID = с.CustomerID
-	Where a.InvoiceDate >= '2015-01-01'  
-	Group by a.InvoiceID, с.CustomerName, a.InvoiceDate)
+From Sales.Invoices a 
+Join Sales.InvoiceLines b ON a.InvoiceID = b.InvoiceID
+Join Sales.Customers с ON a.CustomerID = с.CustomerID
+Where a.InvoiceDate >= '2015-01-01'  
+Group by a.InvoiceID, с.CustomerName, a.InvoiceDate)
 
 Select 
 cteExtendedPrice.InvoiceID [id продажи],
@@ -46,11 +46,11 @@ Order by cteExtendedPrice.InvoiceDate;
 
 ;With cteExtendedPrice as
 (Select a.InvoiceID, с.CustomerName, a.InvoiceDate, sum(b.ExtendedPrice) [сумма продажи]
-	From Sales.Invoices a 
-	Join Sales.InvoiceLines b ON a.InvoiceID = b.InvoiceID
-	Join Sales.Customers с ON a.CustomerID = с.CustomerID
-	Where a.InvoiceDate >= '2015-01-01'  
-	Group by a.InvoiceID, с.CustomerName, a.InvoiceDate)
+From Sales.Invoices a 
+Join Sales.InvoiceLines b ON a.InvoiceID = b.InvoiceID
+Join Sales.Customers с ON a.CustomerID = с.CustomerID
+Where a.InvoiceDate >= '2015-01-01'  
+Group by a.InvoiceID, с.CustomerName, a.InvoiceDate)
 Select 
 cteExtendedPrice.InvoiceID [id продажи],
 cteExtendedPrice.CustomerName [название клиента],
