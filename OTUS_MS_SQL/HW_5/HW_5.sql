@@ -84,3 +84,29 @@ Group by year(b.InvoiceDate), month(b.InvoiceDate), a.Description)
 Select * From cteQuantity a
 Where a.популярность <= 2
 Order by a.год, a.месяц
+
+/*
+4. Функции одним запросом
+Посчитайте по таблице товаров (в вывод также должен попасть ид товара, название, брэнд и цена):
+* пронумеруйте записи по названию товара, так чтобы при изменении буквы алфавита нумерация начиналась заново
+* посчитайте общее количество товаров и выведете полем в этом же запросе
+* посчитайте общее количество товаров в зависимости от первой буквы названия товара
+* отобразите следующий id товара исходя из того, что порядок отображения товаров по имени 
+* предыдущий ид товара с тем же порядком отображения (по имени)
+* названия товара 2 строки назад, в случае если предыдущей строки нет нужно вывести "No items"
+* сформируйте 30 групп товаров по полю вес товара на 1 шт
+
+Для этой задачи НЕ нужно писать аналог без аналитических функций.
+*/
+
+Select 
+StockItemID,
+StockItemName, 
+row_number() over (partition by left(StockItemName, 1) Order by StockItemName) [Нумерация по первой букве],
+count(*) over () [Общее кол-во],
+count(*) over (partition by left(StockItemName, 1)) [Общее кол-во товаров в зависимости],
+lead(StockItemID) over (Order by StockItemName) [Cледующий id],
+lag(StockItemID) over (Order by StockItemName) [предыдущий id],
+lag(StockItemName, 2, 'No items') over (Order by StockItemName) [Названия товара 2 строки назад],
+ntile(30) over (Order by TypicalWeightPerUnit) [Группа товаров по полю вес]
+From [Warehouse].[StockItems];
