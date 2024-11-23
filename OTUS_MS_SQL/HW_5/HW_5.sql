@@ -141,18 +141,21 @@ Order by cteSales.SalespersonPersonID;
 6. Выберите по каждому клиенту два самых дорогих товара, которые он покупал.
 В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
 */
+
 ;With cteCustomers as (
-Select 
+Select distinct
 b.CustomerID,
 b.CustomerName,
 c.StockItemID,
 c.UnitPrice,
-a.InvoiceDate,
-row_number() over (partition by b.CustomerID Order by c.UnitPrice desc) [нумерация товаров]
+--a.InvoiceDate,
+max(a.InvoiceDate) OVER (PARTITION BY b.CustomerID, c.StockItemID) AS [дата],
+dense_rank() over (partition by b.CustomerID Order by c.UnitPrice desc) [нумерация товаров]
 From Sales.Invoices a
 Join Sales.Customers b on b.CustomerID = a.CustomerID 
 Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID )
 
 Select * From cteCustomers
-WHERE cteCustomers.[нумерация товаров] <= 2 
-Order by cteCustomers.CustomerID
+Where cteCustomers.[нумерация товаров] <= 2 
+Order by cteCustomers.CustomerID, cteCustomers.[нумерация товаров]
+
