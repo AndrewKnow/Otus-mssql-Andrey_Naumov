@@ -149,7 +149,7 @@ b.CustomerName,
 c.StockItemID,
 c.UnitPrice,
 --a.InvoiceDate,
-max(a.InvoiceDate) OVER (partition by b.CustomerID, c.StockItemID) AS [дата],
+max(a.InvoiceDate) over (partition by b.CustomerID, c.StockItemID) AS [дата],
 dense_rank() over (partition by b.CustomerID Order by c.UnitPrice desc) [нумерация товаров]
 From Sales.Invoices a
 Join Sales.Customers b on b.CustomerID = a.CustomerID 
