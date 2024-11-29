@@ -55,20 +55,78 @@ Tailspin Toys (Head Office) | Ribeiroville
 ----------------------------+--------------------
 */
 Select 
-    CustomerName,
-    DeliveryAddress.Line
+CustomerName,
+DeliveryAddress.AddressLine
 From 
     Sales.Customers
 Cross apply
     (values 
         (DeliveryAddressLine1),
         (DeliveryAddressLine2)
-    ) DeliveryAddress(Line)
+    ) DeliveryAddress(AddressLine)
 Where 
     CustomerName like '%Tailspin Toys%'
     and (DeliveryAddressLine1 is not null or DeliveryAddressLine2 is not null);
 
 
+/*
+3. В таблице стран (Application.Countries) есть поля с цифровым кодом страны и с буквенным.
+Сделайте выборку ИД страны, названия и ее кода так, 
+чтобы в поле с кодом был либо цифровой либо буквенный код.
+
+Пример результата:
+--------------------------------
+CountryId | CountryName | Code
+----------+-------------+-------
+1         | Afghanistan | AFG
+1         | Afghanistan | 4
+3         | Albania     | ALB
+3         | Albania     | 8
+----------+-------------+-------
+*/
+Select 
+CountryID, 
+CountryName, 
+CountryCode.Code
+From 
+    Application.Countries
+Cross apply
+    (values 
+        (IsoAlpha3Code),
+        (cast(IsoNumericCode as nvarchar))
+    ) CountryCode(Code)
+Order by CountryID, CountryCode.Code;
+
+
+
+/*
+4. Выберите по каждому клиенту два самых дорогих товара, которые он покупал.
+В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
+*/
+
+;With cteCustomers as (
+Select distinct
+b.CustomerID,
+b.CustomerName,
+c.StockItemID,
+c.UnitPrice,
+a.InvoiceDate
+From Sales.Invoices a
+Join Sales.Customers b on b.CustomerID = a.CustomerID 
+Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID)
+
+Select 
+a.CustomerID,
+a.CustomerName,
+TopUnitPrice.StockItemID,
+TopUnitPrice.UnitPrice,
+TopUnitPrice.InvoiceDate
+From Sales.Customers a
+CROSS APPLY (
+	select top 2 * From cteCustomers 
+	Where CustomerID = a.CustomerID
+	) TopUnitPrice
+Order by TopUnitPrice.CustomerID, TopUnitPrice.UnitPrice desc
 
 
 
