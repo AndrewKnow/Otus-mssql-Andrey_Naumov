@@ -104,29 +104,57 @@ Order by CountryID, CountryCode.Code;
 В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
 */
 
-;With cteCustomers as (
-Select distinct
-b.CustomerID,
-b.CustomerName,
-c.StockItemID,
-c.UnitPrice,
-a.InvoiceDate
-From Sales.Invoices a
-Join Sales.Customers b on b.CustomerID = a.CustomerID 
-Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID)
-
 Select 
-a.CustomerID,
-a.CustomerName,
+cus.CustomerID,
+cus.CustomerName,
 TopUnitPrice.StockItemID,
 TopUnitPrice.UnitPrice,
-TopUnitPrice.InvoiceDate
-From Sales.Customers a
-CROSS APPLY (
-	select top 2 * From cteCustomers 
-	Where CustomerID = a.CustomerID
-	) TopUnitPrice
-Order by TopUnitPrice.CustomerID, TopUnitPrice.UnitPrice desc
+max(TopUnitPrice.InvoiceDate) дата
+From Sales.Customers cus
+Cross apply (
+	Select distinct top 2
+	b.CustomerID,
+	b.CustomerName,
+	c.StockItemID,
+	c.UnitPrice,
+	a.InvoiceDate
+	From Sales.Invoices a
+	Join Sales.Customers b on b.CustomerID = a.CustomerID 
+	Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID
+	Where b.CustomerID = cus.CustomerID
+	Order by c.UnitPrice desc
+) TopUnitPrice
+Group by 
+cus.CustomerID,cus.CustomerName,TopUnitPrice.StockItemID,TopUnitPrice.UnitPrice
+Order by cus.CustomerID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
