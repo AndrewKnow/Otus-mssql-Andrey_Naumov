@@ -125,7 +125,7 @@ Cross apply (
 	Order by c.UnitPrice desc
 ) TopUnitPrice
 Group by 
-cus.CustomerID,cus.CustomerName,TopUnitPrice.StockItemID,TopUnitPrice.UnitPrice
+cus.CustomerID, cus.CustomerName, TopUnitPrice.StockItemID, TopUnitPrice.UnitPrice
 Order by cus.CustomerID
 
 
