@@ -104,12 +104,13 @@ Order by CountryID, CountryCode.Code;
 В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
 */
 
+
 Select 
 cus.CustomerID,
 cus.CustomerName,
 TopUnitPrice.StockItemID,
 TopUnitPrice.UnitPrice,
-max(TopUnitPrice.InvoiceDate) дата
+TopUnitPrice.дата
 From Sales.Customers cus
 Cross apply (
 	Select distinct top 2
@@ -117,18 +118,15 @@ Cross apply (
 	b.CustomerName,
 	c.StockItemID,
 	c.UnitPrice,
-	a.InvoiceDate
+	max(a.InvoiceDate) дата
 	From Sales.Invoices a
 	Join Sales.Customers b on b.CustomerID = a.CustomerID 
 	Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID
 	Where b.CustomerID = cus.CustomerID
+	Group by b.CustomerID,b.CustomerName,c.StockItemID,c.UnitPrice
 	Order by c.UnitPrice desc
 ) TopUnitPrice
-Group by 
-cus.CustomerID, cus.CustomerName, TopUnitPrice.StockItemID, TopUnitPrice.UnitPrice
 Order by cus.CustomerID
-
-
 
 
 
