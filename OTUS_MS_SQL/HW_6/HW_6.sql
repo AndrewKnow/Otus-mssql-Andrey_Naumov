@@ -40,8 +40,39 @@ Pivot
 ) pivotTbl
 Order by Convert(DATE,[Дата])
 
+/*
+2. Для всех клиентов с именем, в котором есть "Tailspin Toys"
+вывести все адреса, которые есть в таблице, в одной колонке.
 
---Для проверки
+Пример результата:
+----------------------------+--------------------
+CustomerName                | AddressLine
+----------------------------+--------------------
+Tailspin Toys (Head Office) | Shop 38
+Tailspin Toys (Head Office) | 1877 Mittal Road
+Tailspin Toys (Head Office) | PO Box 8975
+Tailspin Toys (Head Office) | Ribeiroville
+----------------------------+--------------------
+*/
+Select 
+    CustomerName,
+    DeliveryAddress.Line
+From 
+    Sales.Customers
+Cross apply
+    (values 
+        (DeliveryAddressLine1),
+        (DeliveryAddressLine2)
+    ) DeliveryAddress(Line)
+Where 
+    CustomerName like '%Tailspin Toys%'
+    and (DeliveryAddressLine1 is not null or DeliveryAddressLine2 is not null);
+
+
+
+
+
+--Для проверки задание 1
 /*
 Select a.CustomerID, count(a.InvoiceID) [Кол-во]
 From Sales.Invoices a  Join Sales.Customers с ON a.CustomerID = с.CustomerID
@@ -65,4 +96,15 @@ Pivot
 	sum([Кол-во])
 	for [Название] IN ([Sylvanite, MT],	[Peeples Valley, AZ], [Medicine Lodge, KS],	[Gasport, NY], [Jessie, ND])
 ) pivotTbl
+*/
+
+
+--Проверка задание 2
+/*
+Select CustomerName, DeliveryAddressLine1 From Sales.Customers
+Where CustomerName like 'Tailspin Toys%' and DeliveryAddressLine1 is not null
+union all
+Select CustomerName, DeliveryAddressLine2 From Sales.Customers
+Where CustomerName like 'Tailspin Toys%' and DeliveryAddressLine2 is not null
+Order by CustomerName
 */
