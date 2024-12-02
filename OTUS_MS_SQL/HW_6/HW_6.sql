@@ -38,7 +38,7 @@ Pivot
     sum([Кол-во])
     for [Название] IN ([Sylvanite, MT],	[Peeples Valley, AZ], [Medicine Lodge, KS],	[Gasport, NY], [Jessie, ND])
 ) pivotTbl
-Order by Convert(DATE,[Дата])
+Order by  convert(DATE, [Дата], 104) 
 
 /*
 2. Для всех клиентов с именем, в котором есть "Tailspin Toys"
@@ -98,35 +98,73 @@ Cross apply
 Order by CountryID, CountryCode.Code;
 
 
+Select 
+    CountryID, 
+    CountryName, 
+    Code
+From 
+    (Select 
+	CountryID, 
+	CountryName, 
+	cast(IsoAlpha3Code as nvarchar) IsoAlpha3Code, 
+	cast(IsoNumericCode as nvarchar) 
+	IsoNumericCode From Application.Countries) tbl
+Unpivot
+    (Code For CountryCode in (IsoAlpha3Code, IsoNumericCode)) unpivotTbl
+Order by CountryID, Code;
+
 
 /*
 4. Выберите по каждому клиенту два самых дорогих товара, которые он покупал.
 В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
 */
 
-
 Select 
 cus.CustomerID,
 cus.CustomerName,
 TopUnitPrice.StockItemID,
 TopUnitPrice.UnitPrice,
-TopUnitPrice.дата
+(Select max(i.InvoiceDate) From Sales.Invoices i
+	Join Sales.InvoiceLines il on il.InvoiceID = i.InvoiceID
+	Where 
+	il.StockItemID = TopUnitPrice.StockItemID and 
+	i.CustomerID = cus.CustomerID) дата
 From Sales.Customers cus
 Cross apply (
 	Select distinct top 2
-	b.CustomerID,
-	b.CustomerName,
-	c.StockItemID,
-	c.UnitPrice,
-	max(a.InvoiceDate) дата
-	From Sales.Invoices a
-	Join Sales.Customers b on b.CustomerID = a.CustomerID 
-	Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID
-	Where b.CustomerID = cus.CustomerID
-	Group by b.CustomerID,b.CustomerName,c.StockItemID,c.UnitPrice
-	Order by c.UnitPrice desc
+	il.StockItemID,
+	il.UnitPrice
+	From Sales.Invoices i
+	Join Sales.InvoiceLines il on il.InvoiceID = i.InvoiceID
+	Where i.CustomerID = cus.CustomerID
+	Order by il.UnitPrice desc, il.StockItemID desc
 ) TopUnitPrice
-Order by cus.CustomerID
+Order by cus.CustomerID, TopUnitPrice.UnitPrice desc
+
+
+
+--Select 
+--cus.CustomerID,
+--cus.CustomerName,
+--TopUnitPrice.StockItemID,
+--TopUnitPrice.UnitPrice,
+--TopUnitPrice.дата
+--From Sales.Customers cus
+--Cross apply (
+--	Select distinct top 2
+--	b.CustomerID,
+--	b.CustomerName,
+--	c.StockItemID,
+--	c.UnitPrice,
+--	max(a.InvoiceDate) дата
+--	From Sales.Invoices a
+--	Join Sales.Customers b on b.CustomerID = a.CustomerID 
+--	Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID
+--	Where b.CustomerID = cus.CustomerID
+--	Group by b.CustomerID,b.CustomerName,c.StockItemID,c.UnitPrice
+--	Order by c.UnitPrice desc
+--) TopUnitPrice
+--Order by cus.CustomerID
 
 
 
