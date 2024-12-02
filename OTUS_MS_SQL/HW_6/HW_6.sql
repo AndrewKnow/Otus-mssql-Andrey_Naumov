@@ -119,27 +119,58 @@ Order by CountryID, Code;
 В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
 */
 
+
+
 Select 
 cus.CustomerID,
 cus.CustomerName,
 TopUnitPrice.StockItemID,
+TopUnitPrice.Description,
 TopUnitPrice.UnitPrice,
-(Select max(i.InvoiceDate) From Sales.Invoices i
-	Join Sales.InvoiceLines il on il.InvoiceID = i.InvoiceID
-	Where 
-	il.StockItemID = TopUnitPrice.StockItemID and 
-	i.CustomerID = cus.CustomerID) дата
+TopUnitPrice.дата
 From Sales.Customers cus
 Cross apply (
-	Select distinct top 2
-	il.StockItemID,
-	il.UnitPrice
-	From Sales.Invoices i
-	Join Sales.InvoiceLines il on il.InvoiceID = i.InvoiceID
-	Where i.CustomerID = cus.CustomerID
-	Order by il.UnitPrice desc, il.StockItemID desc
+	Select top 2 with ties
+	b.CustomerID,
+	b.CustomerName,
+	c.StockItemID,
+	c.Description,
+	c.UnitPrice,
+	max(a.InvoiceDate) дата
+	From Sales.Invoices a
+	Join Sales.Customers b on b.CustomerID = a.CustomerID 
+	Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID
+	Where b.CustomerID = cus.CustomerID
+	Group by b.CustomerID,b.CustomerName,c.StockItemID,c.Description,c.UnitPrice
+	Order by c.UnitPrice desc
 ) TopUnitPrice
-Order by cus.CustomerID, TopUnitPrice.UnitPrice desc
+Order by cus.CustomerID
+
+
+
+
+
+--Select 
+--cus.CustomerID,
+--cus.CustomerName,
+--TopUnitPrice.StockItemID,
+--TopUnitPrice.UnitPrice,
+--(Select max(i.InvoiceDate) From Sales.Invoices i
+--	Join Sales.InvoiceLines il on il.InvoiceID = i.InvoiceID
+--	Where 
+--	il.StockItemID = TopUnitPrice.StockItemID and 
+--	i.CustomerID = cus.CustomerID) дата
+--From Sales.Customers cus
+--Cross apply (
+--	Select distinct top 2
+--	il.StockItemID,
+--	il.UnitPrice
+--	From Sales.Invoices i
+--	Join Sales.InvoiceLines il on il.InvoiceID = i.InvoiceID
+--	Where i.CustomerID = cus.CustomerID
+--	Order by il.UnitPrice desc, il.StockItemID desc
+--) TopUnitPrice
+--Order by cus.CustomerID, TopUnitPrice.UnitPrice desc
 
 
 
