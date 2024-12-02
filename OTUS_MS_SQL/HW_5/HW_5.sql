@@ -150,7 +150,7 @@ c.StockItemID,
 c.UnitPrice,
 --a.InvoiceDate,
 max(a.InvoiceDate) over (partition by b.CustomerID, c.StockItemID) [дата],
-dense_rank() over (partition by b.CustomerID Order by c.UnitPrice desc, c.StockItemID) [нумерация товаров]
+dense_rank() over (partition by b.CustomerID Order by c.UnitPrice desc) [нумерация товаров]
 From Sales.Invoices a
 Join Sales.Customers b on b.CustomerID = a.CustomerID 
 Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID )
@@ -158,4 +158,5 @@ Join Sales.InvoiceLines c on c.InvoiceID = a.InvoiceID )
 Select * From cteCustomers
 Where cteCustomers.[нумерация товаров] <= 2 
 Order by cteCustomers.CustomerID, cteCustomers.[нумерация товаров]
+
 
