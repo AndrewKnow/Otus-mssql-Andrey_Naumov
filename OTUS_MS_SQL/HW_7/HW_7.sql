@@ -21,6 +21,8 @@ InvoiceMonth | Aakriti Byrraju    | Abel Spirlea       | Abel Tatarescu | ... (�
 -------------+--------------------+--------------------+----------------+----------------------
 */
 
+use WideWorldImporters
+
 Declare @cNames nvarchar(max), @sql nvarchar(max);
 
 -- уникальные значения CustomerName
@@ -36,9 +38,9 @@ Set @sql = N'
 (Select 
 	count(a.InvoiceID) count, 
 	c.CustomerName, 
-	convert(VARCHAR(10), a.InvoiceDate, 104) xdate
+	convert(varchar(10), dateadd(month, datediff(MONTH, 0, a.InvoiceDate), 0), 104) xdate
 From Sales.Invoices a Join Sales.Customers c ON a.CustomerID = c.CustomerID
-Group by c.CustomerName, convert(VARCHAR(10), a.InvoiceDate, 104))
+Group by c.CustomerName, convert(varchar(10), dateadd(month, datediff(MONTH, 0, a.InvoiceDate), 0), 104))
 
 Select *
 From cteCustomerInvoices
