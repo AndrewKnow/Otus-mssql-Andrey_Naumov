@@ -19,17 +19,16 @@ InvoiceMonth | Peeples Valley, AZ | Medicine Lodge, KS | Gasport, NY | Sylvanite
 -------------+--------------------+--------------------+-------------+--------------+------------
 */
 
-
 ;With cteCustomerInvoices as
 (Select 
 	count(a.InvoiceID) [Кол-во], 
 	substring(с.CustomerName, charindex('(', с.CustomerName) + 1, charindex(')', с.CustomerName) - charindex('(', с.CustomerName) - 1) [Название], 
-	convert(VARCHAR(10), a.InvoiceDate, 104) [Дата]
+	convert(varchar(10), dateadd(month, datediff(month, 0, a.InvoiceDate), 0), 104) [Дата]
 From Sales.Invoices a Join Sales.Customers с ON a.CustomerID = с.CustomerID
 Where a.CustomerID between 2 and 6
 Group by 
 	substring(с.CustomerName, charindex('(', с.CustomerName) + 1, charindex(')', с.CustomerName) - charindex('(', с.CustomerName) - 1), 
-	convert(VARCHAR(10), a.InvoiceDate, 104))
+	convert(varchar(10), dateadd(month, datediff(month, 0, a.InvoiceDate), 0), 104))
 
 Select *
 From cteCustomerInvoices
