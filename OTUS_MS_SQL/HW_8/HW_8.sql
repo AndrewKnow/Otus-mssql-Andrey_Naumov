@@ -31,3 +31,9 @@ End
 */
 
 Delete From Sales.Customers Where CustomerID in (Select top 1 CustomerID From Sales.Customers order by CustomerID desc)
+
+/*
+3. Изменить одну запись, из добавленных через UPDATE
+*/
+
+Update Sales.Customers Set CustomerName = N'Имя_Update' Where CustomerID in (Select top 1 CustomerID From Sales.Customers order by CustomerID desc) 
