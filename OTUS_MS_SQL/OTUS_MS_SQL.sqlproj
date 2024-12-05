@@ -62,6 +62,7 @@
     <Folder Include="HW_5" />
     <Folder Include="HW_6" />
     <Folder Include="HW_7" />
+    <Folder Include="HW_8" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HW_2\HW_2.sql" />
@@ -70,5 +71,6 @@
     <None Include="HW_5\HW_5.sql" />
     <None Include="HW_6\HW_6.sql" />
     <None Include="HW_7\HW_7.sql" />
+    <None Include="HW_8\HW_8.sql" />
   </ItemGroup>
 </Project>
