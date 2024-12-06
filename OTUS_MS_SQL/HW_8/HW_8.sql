@@ -89,17 +89,29 @@ When NOT MATCHED by target Then
 	--Delete From Sales.Customers_copy 
 
 -- выгрузит данные через bcp out
-	DECLARE @out varchar(250);
+	Declare @out varchar(250);
 	set @out = N'bcp WideWorldImporters.Sales.Customers OUT "C:\BCP.txt" -T -c -S ' + @@SERVERNAME;
-	PRINT @out;
+	Print @out;
 	
-	EXEC master..xp_cmdshell @out
+	Exec master..xp_cmdshell @out
+
+
+	--output
+	--	NULL
+	--	Начато копирование...
+	--	SQLState = S1000, NativeError = 0
+	--	Error = [Microsoft][ODBC Driver 17 for SQL Server]Warning: BCP import with a format file will convert empty strings in delimited columns to NULL.
+	--	NULL
+	--	Скопировано строк: 668.
+	--	Размер сетевого пакета (в байтах): 4096
+	--	Время (мс) Всего     : 15     В среднем : (44533.33 строк в секунду.)
+	--	NULL
 
 -- загрузить через bulk insert	
-	DECLARE @in varchar(250);
+	Declare @in varchar(250);
 	set @in = N'bcp WideWorldImporters.Sales.Customers_copy IN "C:\BCP.txt" -T -c -S ' + @@SERVERNAME;
 	
-	EXEC master..xp_cmdshell @in;
+	Exec master..xp_cmdshell @in;
 	
 	--SELECT * FROM WideWorldImporters.Sales.Customers_copy;
 
