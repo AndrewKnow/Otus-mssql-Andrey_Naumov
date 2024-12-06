@@ -149,3 +149,27 @@ When NOT MATCHED by target Then
 	Select Next value for Sequences.CustomerID,N'Имя' + cast(CustomerID as varchar),BillToCustomerID,CustomerCategoryID,BuyingGroupID,PrimaryContactPersonID,AlternateContactPersonID,DeliveryMethodID,DeliveryCityID,PostalCityID,CreditLimit,AccountOpenedDate,StandardDiscountPercentage,IsStatementSent,IsOnCreditHold,PaymentDays,PhoneNumber,FaxNumber,DeliveryRun,RunPosition,WebsiteURL,DeliveryAddressLine1,DeliveryAddressLine2,DeliveryPostalCode,DeliveryLocation,PostalAddressLine1,PostalAddressLine2,PostalPostalCode,LastEditedBy
 	From Sales.Customers Where CustomerID = (Select max(CustomerID) From Sales.Customers);
 */
+
+
+-- для настройки BCP
+---- To allow advanced options to be changed.  
+--EXEC sp_configure 'show advanced options', 1;  
+--GO  
+---- To update the currently configured value for advanced options.  
+--RECONFIGURE;  
+--GO  
+---- To enable the feature.  
+--EXEC sp_configure 'xp_cmdshell', 1;  
+--GO  
+---- To update the currently configured value for this feature.  
+--RECONFIGURE;  
+--GO  
+
+----SELECT @@SERVERNAME;
+
+---- выгрузит данные через bcp out
+--	Declare @out varchar(250);
+--	set @out = N'bcp WideWorldImporters.Sales.Customers OUT "C:\BCP.txt" -T -c -S ' + @@SERVERNAME;
+--	Print @out;
+	
+--	Exec master..xp_cmdshell @out
