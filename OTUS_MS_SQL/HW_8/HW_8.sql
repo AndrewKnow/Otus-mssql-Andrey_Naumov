@@ -78,10 +78,39 @@ When NOT MATCHED by target Then
 	source.BillToCustomerID,source.CustomerCategoryID,source.BuyingGroupID,source.PrimaryContactPersonID,source.AlternateContactPersonID,
 	source.DeliveryMethodID,source.DeliveryCityID,source.PostalCityID,source.CreditLimit,source.AccountOpenedDate,source.StandardDiscountPercentage,
 	source.IsStatementSent,IsOnCreditHold,PaymentDays,source.PhoneNumber,source.FaxNumber,source.DeliveryRun,source.RunPosition,WebsiteURL,source.DeliveryAddressLine1,
-	source.DeliveryAddressLine2,source.DeliveryPostalCode,source.DeliveryLocation,
-	source.PostalAddressLine1,source.PostalAddressLine2,source.PostalPostalCode,source.LastEditedBy,source.ValidFrom,source.ValidTo);
+	source.DeliveryAddressLine2,source.DeliveryPostalCode,source.DeliveryLocation,source.PostalAddressLine1,source.PostalAddressLine2,source.PostalPostalCode,source.LastEditedBy,
+	source.ValidFrom,source.ValidTo);
 
 
+/*
+5. Напишите запрос, который выгрузит данные через bcp out и загрузить через bulk insert
+*/
+--Очистка Sales.Customers_copy для bulk insert
+	--Delete From Sales.Customers_copy 
+
+-- выгрузит данные через bcp out
+	DECLARE @out varchar(250);
+	set @out = N'bcp WideWorldImporters.Sales.Customers OUT "C:\BCP.txt" -T -c -S ' + @@SERVERNAME;
+	PRINT @out;
+	
+	EXEC master..xp_cmdshell @out
+
+-- загрузить через bulk insert	
+	DECLARE @in varchar(250);
+	set @in = N'bcp WideWorldImporters.Sales.Customers_copy IN "C:\BCP.txt" -T -c -S ' + @@SERVERNAME;
+	
+	EXEC master..xp_cmdshell @in;
+	
+	--SELECT * FROM WideWorldImporters.Sales.Customers_copy;
+
+	--output
+	--	NULL
+	--	Начато копирование...
+	--	NULL
+	--	Скопировано строк: 668.
+	--	Размер сетевого пакета (в байтах): 4096
+	--	Время (мс) Всего     : 1      В среднем : (668000.00 строк в секунду.)
+	--	NULL
 
 
 
