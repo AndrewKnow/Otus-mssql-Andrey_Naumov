@@ -56,21 +56,21 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="HW_2" />
-    <Folder Include="HW_3" />
-    <Folder Include="HW_4" />
-    <Folder Include="HW_5" />
-    <Folder Include="HW_6" />
-    <Folder Include="HW_7" />
-    <Folder Include="HW_8" />
+    <Folder Include="HW_2_SELECT" />
+    <Folder Include="HW_3_GROUP BY, HAVING" />
+    <Folder Include="HW_4_CTE" />
+    <Folder Include="HW_5_Оконные функции" />
+    <Folder Include="HW_6_Pivot и Cross Apply" />
+    <Folder Include="HW_7_Динамический PIVOT" />
+    <Folder Include="HW_8_Insert, Update, Merge" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="HW_2\HW_2.sql" />
-    <None Include="HW_3\HW_3.sql" />
-    <None Include="HW_4\HW_4.sql" />
-    <None Include="HW_5\HW_5.sql" />
-    <None Include="HW_6\HW_6.sql" />
-    <None Include="HW_7\HW_7.sql" />
-    <None Include="HW_8\HW_8.sql" />
+    <None Include="HW_2_SELECT\HW_2.sql" />
+    <None Include="HW_3_GROUP BY, HAVING\HW_3.sql" />
+    <None Include="HW_4_CTE\HW_4.sql" />
+    <None Include="HW_5_Оконные функции\HW_5.sql" />
+    <None Include="HW_6_Pivot и Cross Apply\HW_6.sql" />
+    <None Include="HW_7_Динамический PIVOT\HW_7.sql" />
+    <None Include="HW_8_Insert, Update, Merge\HW_8.sql" />
   </ItemGroup>
 </Project>
