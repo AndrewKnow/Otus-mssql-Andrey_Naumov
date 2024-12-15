@@ -1,4 +1,5 @@
-﻿/*
+﻿USE WideWorldImporters
+/*
 1. В личном кабинете есть файл StockItems.xml.
 Это данные из таблицы Warehouse.StockItems.
 Преобразовать эти данные в плоскую таблицу с полями, аналогичными Warehouse.StockItems.
