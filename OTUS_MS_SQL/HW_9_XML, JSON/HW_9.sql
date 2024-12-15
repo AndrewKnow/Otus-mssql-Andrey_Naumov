@@ -164,3 +164,30 @@ Set @xml = (
 );
 Select @xml
 
+
+/*
+3. В таблице Warehouse.StockItems в колонке CustomFields есть данные в JSON.
+Написать SELECT для вывода:
+- StockItemID
+- StockItemName
+- CountryOfManufacture (из CustomFields)
+- FirstTag (из поля CustomFields, первое значение из массива Tags)
+*/
+
+--Select CustomFields From Warehouse.StockItems
+
+Select si.StockItemID, si.StockItemName,
+    json_value(si.CustomFields, '$.CountryOfManufacture') CountryOfManufacture,
+    j.FirstTag
+From
+    Warehouse.StockItems si
+outer apply (
+    Select top 1 value FirstTag
+    From openjson(json_query(si.CustomFields, '$.Tags'))
+) j;
+
+
+Select si.StockItemID, si.StockItemName
+, json_value(si.CustomFields, '$.CountryOfManufacture') CountryOfManufacture
+, json_value(si.CustomFields, '$.Tags[0]') FirstTag
+From Warehouse.StockItems si
