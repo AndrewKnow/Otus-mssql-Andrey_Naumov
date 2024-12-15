@@ -63,6 +63,7 @@
     <Folder Include="HW_6_Pivot и Cross Apply" />
     <Folder Include="HW_7_Динамический PIVOT" />
     <Folder Include="HW_8_Insert, Update, Merge" />
+    <Folder Include="HW_9_XML, JSON" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HW_2_SELECT\HW_2.sql" />
@@ -72,5 +73,6 @@
     <None Include="HW_6_Pivot и Cross Apply\HW_6.sql" />
     <None Include="HW_7_Динамический PIVOT\HW_7.sql" />
     <None Include="HW_8_Insert, Update, Merge\HW_8.sql" />
+    <None Include="HW_9_XML, JSON\HW_9.sql" />
   </ItemGroup>
 </Project>
