@@ -246,4 +246,4 @@ From
 cross apply openjson(JSON_QUERY(si.CustomFields, '$.Tags')) j
 Left join cte on cte.id =  si.StockItemID
 Where
-    j.value = 'Vintage';
+    j.value = 'Vintage'; 
