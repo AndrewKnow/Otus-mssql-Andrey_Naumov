@@ -137,3 +137,28 @@ When NOT MATCHED by target Then
 	values 
 	(source.StockItemName, source.SupplierID, source.UnitPackageID, source.OuterPackageID, source.QuantityPerOuter, 
 	source.TypicalWeightPerUnit, source.LeadTimeDays, source.IsChillerStock, source.TaxRate, source.UnitPrice );
+
+/*
+2. Выгрузить данные из таблицы StockItems в такой же xml-файл, как StockItems.xml
+*/
+
+Declare @xml nvarchar(MAX);
+
+Set @xml = (
+    Select 
+        StockItemName '@Name',
+        SupplierID 'SupplierID',
+		(Select 
+		        UnitPackageID 'UnitPackageID',
+		        OuterPackageID 'OuterPackageID',
+		        QuantityPerOuter 'QuantityPerOuter',
+		        TypicalWeightPerUnit 'TypicalWeightPerUnit'
+		    For XML path(''), type
+		) 'Package',
+		LeadTimeDays 'LeadTimeDays',
+		IsChillerStock 'IsChillerStock',
+		TaxRate 'TaxRate',
+		UnitPrice 'UnitPrice'
+    From Warehouse.StockItems
+    For XML path('StockItem'), root('StockItems')
+);
