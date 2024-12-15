@@ -142,7 +142,7 @@ When NOT MATCHED by target Then
 2. Выгрузить данные из таблицы StockItems в такой же xml-файл, как StockItems.xml
 */
 
-Declare @xml nvarchar(MAX);
+Declare @xml xml;
 
 Set @xml = (
     Select 
@@ -162,3 +162,5 @@ Set @xml = (
     From Warehouse.StockItems
     For XML path('StockItem'), root('StockItems')
 );
+Select @xml
+
