@@ -191,3 +191,59 @@ Select si.StockItemID, si.StockItemName
 , json_value(si.CustomFields, '$.CountryOfManufacture') CountryOfManufacture
 , json_value(si.CustomFields, '$.Tags[0]') FirstTag
 From Warehouse.StockItems si
+
+
+/*
+4. Найти в StockItems строки, где есть тэг "Vintage".
+Вывести: 
+- StockItemID
+- StockItemName
+- (опционально) все теги (из CustomFields) через запятую в одном поле
+
+Тэги искать в поле CustomFields, а не в Tags.
+Запрос написать через функции работы с JSON.
+Для поиска использовать равенство, использовать LIKE запрещено.
+
+Должно быть в таком виде:
+... where ... = 'Vintage'
+
+Так принято не будет:
+... where ... Tags like '%Vintage%'
+... where ... CustomFields like '%Vintage%' 
+*/
+
+Select
+    si.StockItemID,
+    si.StockItemName,
+	j.value
+From
+    Warehouse.StockItems si
+cross apply openjson(JSON_QUERY(si.CustomFields, '$.Tags')) j
+Where
+    j.value = 'Vintage';
+
+-- опционально
+
+;With cte (id,siName,val) as
+(Select
+    si.StockItemID,
+    si.StockItemName,
+    string_agg(j.value, ', ')
+From
+    Warehouse.StockItems si
+cross apply openjson(json_query(si.CustomFields, '$.Tags')) j
+Group by
+    si.StockItemID,
+    si.StockItemName)
+
+Select
+    si.StockItemID,
+    si.StockItemName,
+	--j.value,
+	cte.val
+From
+    Warehouse.StockItems si
+cross apply openjson(JSON_QUERY(si.CustomFields, '$.Tags')) j
+Left join cte on cte.id =  si.StockItemID
+Where
+    j.value = 'Vintage';
