@@ -176,15 +176,15 @@ Select @xml
 
 --Select CustomFields From Warehouse.StockItems
 
-Select si.StockItemID, si.StockItemName,
-    json_value(si.CustomFields, '$.CountryOfManufacture') CountryOfManufacture,
-    j.FirstTag
-From
-    Warehouse.StockItems si
-outer apply (
-    Select top 1 value FirstTag
-    From openjson(json_query(si.CustomFields, '$.Tags'))
-) j;
+--Select si.StockItemID, si.StockItemName,
+--    json_value(si.CustomFields, '$.CountryOfManufacture') CountryOfManufacture,
+--    j.FirstTag
+--From
+--    Warehouse.StockItems si
+--outer apply (
+--    Select top 1 value FirstTag
+--    From openjson(json_query(si.CustomFields, '$.Tags'))
+--) j;
 
 
 Select si.StockItemID, si.StockItemName
