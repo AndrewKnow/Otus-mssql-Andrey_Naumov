@@ -76,7 +76,7 @@
     <None Include="HW_7_Динамический PIVOT\HW_7.sql" />
     <None Include="HW_8_Insert, Update, Merge\HW_8.sql" />
     <None Include="HW_9_XML, JSON\HW_9.sql" />
-    <None Include="Course_project\HW_9_DB_model\Database_model.sql" />
+    <None Include="Course_project\HW_9_DB_model\DB_model.sql" />
     <None Include="Course_project\HW_9_DB_model\Склад товаров для авто туризма.pptx" />
   </ItemGroup>
 </Project>
