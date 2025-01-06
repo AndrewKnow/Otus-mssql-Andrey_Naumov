@@ -26,7 +26,7 @@ CREATE TABLE Products (
 
 --4. Совместимость с автомобилем. Информация.
 CREATE TABLE CarCompatibility (
-    CompatibilityId INT PRIMARY KEY IDENTITY(1,1),
+	CONSTRAINT PK_CarCompatibility PRIMARY KEY (ProductId, CarModelId),
     ProductId INT NOT NULL,
     CarModelId INT NOT NULL,
     Description NVARCHAR(250),
