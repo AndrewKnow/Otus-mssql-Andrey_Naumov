@@ -66,6 +66,7 @@
     <Folder Include="HW_9_XML, JSON" />
     <Folder Include="Course_project" />
     <Folder Include="Course_project\HW_10_DB_model" />
+    <Folder Include="Course_project\HW_11_DB" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HW_2_SELECT\HW_2.sql" />
@@ -76,7 +77,7 @@
     <None Include="HW_7_Динамический PIVOT\HW_7.sql" />
     <None Include="HW_8_Insert, Update, Merge\HW_8.sql" />
     <None Include="HW_9_XML, JSON\HW_9.sql" />
-    <None Include="Course_project\HW_10_DB_model\DB_model.sql" />
     <None Include="Course_project\HW_10_DB_model\Склад товаров для автотуризма.pptx" />
+    <None Include="Course_project\HW_11_DB\DB_model.sql" />
   </ItemGroup>
 </Project>
