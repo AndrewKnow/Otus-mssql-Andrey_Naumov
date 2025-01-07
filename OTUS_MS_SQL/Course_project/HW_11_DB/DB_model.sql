@@ -55,8 +55,9 @@ CREATE TABLE CarCompatibility (
 CREATE NONCLUSTERED INDEX IX_CarCompatibility_CarModelId ON CarCompatibility (CarModelId);
 
 -- Создание индекса на комбинацию ProductId и CarModelId --06.01.2025
-CREATE NONCLUSTERED INDEX IX_CarCompatibility_ProductId_CarModelId ON CarCompatibility (ProductId, CarModelId);
-
+--CREATE NONCLUSTERED INDEX IX_CarCompatibility_ProductId_CarModelId ON CarCompatibility (ProductId, CarModelId);
+-- 07.01.2025
+--DROP INDEX [IX_CarCompatibility_ProductId_CarModelId] ON [dbo].[CarCompatibility]
 
 --5. Аксесуары для товаров Products. Сопутсвующие товары рекомендуемые с основным товаром.
 CREATE TABLE Accessories (
