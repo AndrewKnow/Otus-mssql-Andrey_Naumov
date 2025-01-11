@@ -62,7 +62,7 @@ Left join Accessories A on P.ProductId = A.ProductId
 Where P.ProductName LIKE '%тент%' and C.Brand = 'Lada' and C.Model = 'Granta'; 
 
 
--- Поиск аксессуаров для товара, в наименовании которого есть "тент" для авто
+-- поиск аксессуаров для товара, в наименовании которого есть "тент" для авто
 Select 
     P.ProductId, 
     P.ProductName, 
@@ -86,3 +86,37 @@ Join CarCompatibility CC ON P.ProductId = CC.ProductId
 Join Cars C ON CC.CarModelId = C.CarModelId 
 Where P.ProductName like '%тент%' 
 and C.Brand = 'лада'  and C.Model = 'гранта'; 
+
+
+-- поиск количества остатков товаров на определенные даты
+
+Declare @ColumnsDateList nvarchar(max), @sql nvarchar(max);
+
+-- Уникальные даты для столбцов
+Select @ColumnsDateList = STRING_AGG(QUOTENAME(convert(varchar(10), LastUpdated, 120)), ', ')
+From (Select distinct convert(varchar(10), LastUpdated, 120) AS LastUpdated
+      From ProductsStockQuantity) AS DateList;
+
+Set @SQL = '
+Select ProductName, QuantitySource, ' + @ColumnsDateList + '
+From 
+(
+    Select 
+        P.ProductName,
+        PSQ.QuantitySource,
+        convert(varchar(10), PSQ.LastUpdated, 120) AS StockDate,  -- конвертируем дату для использования в pivot
+        PSQ.Quantity
+    From ProductsStockQuantity PSQ
+    Join Products P ON PSQ.ProductId = P.ProductId
+) AS SourceTable
+pivot 
+(
+    sum(Quantity)  -- подсчета остатков на определенную дату @ColumnsDateList
+    For StockDate in (' + @ColumnsDateList + ')  
+) AS PivotTable
+Order by ProductName, QuantitySource;
+';
+
+exec sp_executesql @SQL;
+
+
