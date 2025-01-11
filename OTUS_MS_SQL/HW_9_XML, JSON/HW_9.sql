@@ -168,7 +168,7 @@ Select @xml
 
 /*
 3. В таблице Warehouse.StockItems в колонке CustomFields есть данные в JSON.
-Написать SELECT для вывода:
+Написать Select для вывода:
 - StockItemID
 - StockItemName
 - CountryOfManufacture (из CustomFields)
@@ -206,11 +206,11 @@ From Warehouse.StockItems si
 Для поиска использовать равенство, использовать LIKE запрещено.
 
 Должно быть в таком виде:
-... where ... = 'Vintage'
+... Where ... = 'Vintage'
 
 Так принято не будет:
-... where ... Tags like '%Vintage%'
-... where ... CustomFields like '%Vintage%' 
+... Where ... Tags like '%Vintage%'
+... Where ... CustomFields like '%Vintage%' 
 */
 
 Select

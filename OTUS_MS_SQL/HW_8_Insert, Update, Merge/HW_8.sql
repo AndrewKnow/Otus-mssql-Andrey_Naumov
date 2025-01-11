@@ -113,7 +113,7 @@ When NOT MATCHED by target Then
 	
 	Exec master..xp_cmdshell @in;
 	
-	--SELECT * FROM WideWorldImporters.Sales.Customers_copy;
+	--Select * From WideWorldImporters.Sales.Customers_copy;
 
 	--output
 	--	NULL
@@ -165,7 +165,7 @@ When NOT MATCHED by target Then
 --RECONFIGURE;  
 --GO  
 
-----SELECT @@SERVERNAME;
+----Select @@SERVERNAME;
 
 ---- выгрузит данные через bcp out
 --	Declare @out varchar(250);

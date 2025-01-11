@@ -35,7 +35,7 @@ cteExtendedPrice.InvoiceID [id продажи],
 cteExtendedPrice.CustomerName [название клиента],
 cteExtendedPrice.InvoiceDate [дата продажи],  
 cteExtendedPrice.[сумма продажи],
-(Select sum([сумма продажи]) FROM cteExtendedPrice cte2 
+(Select sum([сумма продажи]) From cteExtendedPrice cte2 
 Where month(cteExtendedPrice.InvoiceDate) = month(cte2.InvoiceDate) and year(cteExtendedPrice.InvoiceDate) = year(cte2.InvoiceDate)) [сумма нарастающим итогом]  
 From cteExtendedPrice
 Order by cteExtendedPrice.InvoiceDate;
