@@ -10,13 +10,13 @@ CREATE NONCLUSTERED INDEX IX_Categories_Name ON Categories (CategoryName);
 CREATE NONCLUSTERED INDEX IX_Cars_Brand_Model ON Cars (Brand, Model);
 
 -- поиск товаров
-CREATE NONCLUSTERED INDEX IX_Products_CategoryId ON Products (CategoryId);
+CREATE NONCLUSTERED INDEX IX_Products_CategoryId ON Products (CategoryId) INCLUDE (Description); 
 
 -- поиск товара совместимого с авто
 CREATE NONCLUSTERED INDEX IX_CarCompatibility_CarModelId ON CarCompatibility (CarModelId);
 
 -- поиск аксесуаров
-CREATE NONCLUSTERED INDEX IX_Accessories_ProductId ON Accessories (ProductId);
+CREATE NONCLUSTERED INDEX IX_Accessories_ProductId ON Accessories (ProductId) INCLUDE (Description);
 
 -- остатки по товару
 CREATE NONCLUSTERED INDEX IX_ProductsStock_ProductId ON ProductsStockQuantity (ProductId);
