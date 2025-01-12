@@ -110,7 +110,7 @@ From
 ) AS SourceTable
 pivot 
 (
-    sum(Quantity)  -- подсчета остатков на определенную дату @ColumnsDateList
+    sum(Quantity)  -- подсчет остатков на определенную дату @ColumnsDateList
     For StockDate in (' + @ColumnsDateList + ')  
 ) AS PivotTable
 Order by ProductName, QuantitySource;
