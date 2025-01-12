@@ -43,7 +43,7 @@ Select P.ProductId, P.ProductName, P.Price, P.Description
 From Products P
 Join CarCompatibility CC on P.ProductId = CC.ProductId
 Join Cars C on CC.CarModelId = C.CarModelId
-Where P.ProductName like '%тент%' and C.Brand = 'лада'  and C.Model = 'гранта';
+Where C.Brand = 'лада'  and C.Model = 'гранта' and P.ProductName like '%тент%';
 
 -- + аксессуары
 Select 
@@ -59,7 +59,7 @@ From Products P
 Join CarCompatibility CC on P.ProductId = CC.ProductId
 Join Cars C on CC.CarModelId = C.CarModelId
 Left join Accessories A on P.ProductId = A.ProductId  
-Where P.ProductName LIKE '%тент%' and C.Brand = 'лада' and C.Model = 'гранта'; 
+Where C.Brand = 'лада' and C.Model = 'гранта' and P.ProductName LIKE '%тент%'; 
 
 
 -- поиск аксессуаров для товара, в наименовании которого есть "тент" для авто
@@ -84,8 +84,7 @@ Cross apply (
 ) A
 Join CarCompatibility CC ON P.ProductId = CC.ProductId 
 Join Cars C ON CC.CarModelId = C.CarModelId 
-Where P.ProductName like '%тент%' 
-and C.Brand = 'лада'  and C.Model = 'гранта'; 
+Where C.Brand = 'лада'  and C.Model = 'гранта' and P.ProductName like '%тент%'; 
 
 
 -- поиск количества остатков товаров на определенные даты
