@@ -68,6 +68,7 @@
     <Folder Include="Course_project\HW_10_DB_model" />
     <Folder Include="Course_project\HW_11_DB" />
     <Folder Include="Course_project\HW_12_Select" />
+    <Folder Include="HW_13_Stored procedures, functions, triggers" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HW_2_SELECT\HW_2.sql" />
@@ -81,5 +82,6 @@
     <None Include="Course_project\HW_10_DB_model\Склад товаров для автотуризма.pptx" />
     <None Include="Course_project\HW_11_DB\DB_model.sql" />
     <None Include="Course_project\HW_12_Select\HW_12.sql" />
+    <None Include="HW_13_Stored procedures, functions, triggers\HW_13.sql" />
   </ItemGroup>
 </Project>
