@@ -152,7 +152,25 @@ SET STATISTICS TIME OFF;
 4) Создайте табличную функцию покажите как ее можно вызвать для каждой строки result set'а без использования цикла. 
 */
 
-напишите здесь свое решение
+IF OBJECT_ID (N'dbo.fGetCustomerPurchaseAmountTable', N'IF') IS NOT NULL DROP FUNCTION dbo.fGetCustomerPurchaseAmountTable;
+
+CREATE FUNCTION dbo.fGetCustomerPurchaseAmountTable()
+RETURNS TABLE
+AS
+RETURN
+(
+    Select
+        si.CustomerID,
+        COALESCE(SUM(sil.ExtendedPrice), 0) Total -- замена NULL на 0
+    From Sales.Invoices si
+    Join Sales.InvoiceLines sil ON si.InvoiceID = sil.InvoiceID
+    Group by si.CustomerID
+);
+
+-- использование функции
+Select c.CustomerID, COALESCE(f.Total, 0)
+From Sales.Customers c
+Left join dbo.fGetCustomerPurchaseAmountTable() f ON c.CustomerID = f.CustomerID;
 
 /*
 5) Опционально. Во всех процедурах укажите какой уровень изоляции транзакций вы бы использовали и почему. 
