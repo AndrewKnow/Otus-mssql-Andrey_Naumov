@@ -29,7 +29,7 @@ CREATE TABLE Products (
     ProductName NVARCHAR(100) NOT NULL,
     CategoryId INT NOT NULL,
     Price DECIMAL(10,2) NOT NULL CHECK (Price >= 0),  -- Ограничение на цену товара -- 06.01.2025
-    Description NVARCHAR(MAX),
+    Description NVARCHAR(255),
     DateAdded DATETIME2 DEFAULT GETDATE(), -- Добавлен дата внесения товара, по умолчанию будет подставлена текущая дата  -- 06.01.2025
     IsActive BIT DEFAULT 1,  -- Добавлен статус товара -- 06.01.2025
     CONSTRAINT FK_Products_Categories FOREIGN KEY (CategoryId) REFERENCES Categories(CategoryId),
@@ -66,7 +66,7 @@ CREATE TABLE Accessories (
 	AccessoryName NVARCHAR(100) NOT NULL,
 	CategoryId INT NOT NULL,
 	Price DECIMAL(10,2) NOT NULL CHECK (Price >= 0),  -- Ограничение на цену аксессуара
-    Description NVARCHAR(MAX)
+    Description NVARCHAR(255)
     CONSTRAINT FK_Accessories_Products FOREIGN KEY (ProductId) REFERENCES Products(ProductId),
 	CONSTRAINT CK_Accessories_Name CHECK (LEN(AccessoryName) > 0)  -- Ограничение на пустое имя аксессуара
 );
