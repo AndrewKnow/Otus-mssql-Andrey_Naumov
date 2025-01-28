@@ -85,5 +85,6 @@
     <None Include="Course_project\HW_12_Select\HW_12.sql" />
     <None Include="HW_13_Stored procedures, functions, triggers\HW_13.sql" />
     <None Include="HW_14_CLR_dll_в_SQLServer\HW_14.sql" />
+    <None Include="HW_14_CLR_dll_в_SQLServer\Рузультат CLR.bmp" />
   </ItemGroup>
 </Project>
