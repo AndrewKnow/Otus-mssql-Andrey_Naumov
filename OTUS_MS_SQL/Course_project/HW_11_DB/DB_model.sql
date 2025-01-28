@@ -1,5 +1,7 @@
 ﻿use WarehouseForAutoTourism
 
+-- Создание индексов в ДЗ 12
+
 --1. Категории товаров. Справочник.
 CREATE TABLE Categories (
     CategoryId INT PRIMARY KEY IDENTITY(1,1),
@@ -8,7 +10,7 @@ CREATE TABLE Categories (
 );
 
 -- Индекс для поиска по имени -- 06.01.2025
-CREATE NONCLUSTERED INDEX IX_Categories_Name ON Categories (CategoryName); 
+--CREATE NONCLUSTERED INDEX IX_Categories_Name ON Categories (CategoryName); 
 
 --2. Автомобили. Марка - модель. Справочник.
 CREATE TABLE Cars (
@@ -20,7 +22,7 @@ CREATE TABLE Cars (
 );
 
 -- Индекс на поля Brand и Model для быстрого поиска по марке и модели-- 06.01.2025
-CREATE NONCLUSTERED INDEX IX_Cars_Brand_Model ON Cars (Brand, Model);
+--CREATE NONCLUSTERED INDEX IX_Cars_Brand_Model ON Cars (Brand, Model);
 
 
 --3. Товары. Основной тип товара авто-тенты.
@@ -37,7 +39,7 @@ CREATE TABLE Products (
 );
 
 -- Индекс на CategoryId для быстрого поиска товаров по категориям
-CREATE NONCLUSTERED INDEX IX_Products_CategoryId ON Products (CategoryId);
+--CREATE NONCLUSTERED INDEX IX_Products_CategoryId ON Products (CategoryId);
 
 
 --4. Совместимость с автомобилем. Информация.
@@ -52,7 +54,7 @@ CREATE TABLE CarCompatibility (
 );
 
 -- Индекс на CarModelId для быстрого поиска совместимости по моделям автомобилей -- 06.01.2025
-CREATE NONCLUSTERED INDEX IX_CarCompatibility_CarModelId ON CarCompatibility (CarModelId);
+--CREATE NONCLUSTERED INDEX IX_CarCompatibility_CarModelId ON CarCompatibility (CarModelId);
 
 -- Создание индекса на комбинацию ProductId и CarModelId --06.01.2025
 --CREATE NONCLUSTERED INDEX IX_CarCompatibility_ProductId_CarModelId ON CarCompatibility (ProductId, CarModelId);
@@ -72,7 +74,7 @@ CREATE TABLE Accessories (
 );
 
 -- Индекс на ProductId для быстрого поиска аксессуаров по товарам -- 06.01.2025
-CREATE NONCLUSTERED INDEX IX_Accessories_ProductId ON Accessories (ProductId);
+--CREATE NONCLUSTERED INDEX IX_Accessories_ProductId ON Accessories (ProductId);
 
 
 --6. Остатки на складе. Подразумевается ввод данных по количеству на дату.
@@ -86,7 +88,7 @@ CREATE TABLE ProductsStockQuantity  (
 );
 
 -- Индекс на ProductId для быстрого поиска остатков по товарам -- 06.01.2025
-CREATE NONCLUSTERED INDEX IX_ProductsStock_ProductId ON ProductsStockQuantity (ProductId);
+--CREATE NONCLUSTERED INDEX IX_ProductsStock_ProductId ON ProductsStockQuantity (ProductId);
 
 
 --7. Остатки на складе для аксессуаров.
@@ -100,4 +102,4 @@ CREATE TABLE AccessoriesStockQuantity  (
 );
 
 -- Индекс на AccessoriesId для быстрого поиска остатков по аксессуарам - 06.01.2025
-CREATE NONCLUSTERED INDEX IX_AccessoriesStock_AccessoriesId ON AccessoriesStockQuantity (AccessoriesId);
+--CREATE NONCLUSTERED INDEX IX_AccessoriesStock_AccessoriesId ON AccessoriesStockQuantity (AccessoriesId);

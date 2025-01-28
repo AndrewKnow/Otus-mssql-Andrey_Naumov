@@ -5,6 +5,10 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "OTUS_MS_SQL", "OTUS_MS_SQL\OTUS_MS_SQL.sqlproj", "{75EC6AA5-D251-40B9-A6BE-818AF24EB450}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseForAutoTourismCLR", "WarehouseForAutoTourismCLR\WarehouseForAutoTourismCLR.csproj", "{D11927F4-71B2-441C-8622-0BB89D3704D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouseConsoleApp", "WareHouseConsoleApp\WareHouseConsoleApp.csproj", "{15E4EB4E-DAC6-45D3-A708-06930784E48F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +21,14 @@ Global
 		{75EC6AA5-D251-40B9-A6BE-818AF24EB450}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75EC6AA5-D251-40B9-A6BE-818AF24EB450}.Release|Any CPU.Build.0 = Release|Any CPU
 		{75EC6AA5-D251-40B9-A6BE-818AF24EB450}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D11927F4-71B2-441C-8622-0BB89D3704D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D11927F4-71B2-441C-8622-0BB89D3704D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D11927F4-71B2-441C-8622-0BB89D3704D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D11927F4-71B2-441C-8622-0BB89D3704D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15E4EB4E-DAC6-45D3-A708-06930784E48F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15E4EB4E-DAC6-45D3-A708-06930784E48F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15E4EB4E-DAC6-45D3-A708-06930784E48F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15E4EB4E-DAC6-45D3-A708-06930784E48F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

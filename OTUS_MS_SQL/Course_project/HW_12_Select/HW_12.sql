@@ -2,6 +2,7 @@
 --Описание/Пошаговая инструкция выполнения домашнего задания:
 --Думаем какие запросы у вас будут в базе и добавляем для них индексы. Проверяем, что они используются в запросе.
 
+use WarehouseForAutoTourism
 
 -- поиск категории
 CREATE NONCLUSTERED INDEX IX_Categories_Name ON Categories (CategoryName); 
@@ -43,7 +44,7 @@ Select P.ProductId, P.ProductName, P.Price, P.Description
 From Products P
 Join CarCompatibility CC on P.ProductId = CC.ProductId
 Join Cars C on CC.CarModelId = C.CarModelId
-Where C.Brand = 'лада'  and C.Model = 'гранта' and P.ProductName like '%тент%';
+Where C.Brand = 'LADA'  and C.Model = 'GRANTA' and P.ProductName like '%тент%';
 
 -- + аксессуары
 Select 
@@ -59,7 +60,7 @@ From Products P
 Join CarCompatibility CC on P.ProductId = CC.ProductId
 Join Cars C on CC.CarModelId = C.CarModelId
 Left join Accessories A on P.ProductId = A.ProductId  
-Where C.Brand = 'лада' and C.Model = 'гранта' and P.ProductName LIKE '%тент%'; 
+Where C.Brand = 'LADA' and C.Model = 'GRANTA' and P.ProductName LIKE '%тент%'; 
 
 
 -- поиск аксессуаров для товара, в наименовании которого есть "тент" для авто
@@ -84,7 +85,7 @@ Cross apply (
 ) A
 Join CarCompatibility CC ON P.ProductId = CC.ProductId 
 Join Cars C ON CC.CarModelId = C.CarModelId 
-Where C.Brand = 'лада'  and C.Model = 'гранта' and P.ProductName like '%тент%'; 
+Where C.Brand = 'LADA'  and C.Model = 'GRANTA' and P.ProductName like '%тент%'; 
 
 
 -- поиск количества остатков товаров на определенные даты
