@@ -42,7 +42,7 @@ namespace CLR
                     // Добавление параметров
                     command.Parameters.AddWithValue("@Brand", brand);
                     command.Parameters.AddWithValue("@Model", model);
-                    command.Parameters.AddWithValue("@ProductName", "%" + productName + "%"); // Добавляем символы '%' для LIKE
+                    command.Parameters.AddWithValue("@ProductName", "%" + productName + "%");
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -81,7 +81,7 @@ namespace CLR
                         }
                         else
                         {
-                            SqlContext.Pipe.Send("Нет данных для указанного запроса.");
+                            SqlContext.Pipe.Send("Нет данных");
                         }
                     }
                 }
