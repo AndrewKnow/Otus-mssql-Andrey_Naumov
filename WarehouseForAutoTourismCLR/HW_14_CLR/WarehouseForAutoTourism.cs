@@ -14,7 +14,6 @@ namespace CLR
             // Строка подключения
             string connectionString = "Server=Dynamo\\OTUSSQL; Database=WarehouseForAutoTourism; Integrated Security=True;";
 
-            // SQ
             string query = @"
                 SELECT 
                     P.ProductId, 
