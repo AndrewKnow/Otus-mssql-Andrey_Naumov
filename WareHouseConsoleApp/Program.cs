@@ -10,32 +10,31 @@ namespace ConsoleApp
         {
             // Запрашиваем у пользователя значения для фильтрации
             Console.Write("Введите бренд автомобиля (например, 'LADA'): ");
-            string brand = Console.ReadLine();
+            var brand = Console.ReadLine();
 
             Console.Write("Введите модель автомобиля (например, 'GRANTA'): ");
-            string model = Console.ReadLine();
+            var model = Console.ReadLine();
 
             Console.Write("Введите часть названия продукта для поиска (например, 'тент'): ");
-            string productName = Console.ReadLine();
+            var productName = Console.ReadLine();
 
-            string connectionString = "Server=Dynamo\\OTUSSQL; Database=WarehouseForAutoTourism; Integrated Security=True;";
-            string query = @"
-                SELECT 
+            var connectionString = "Server=Dynamo\\OTUSSQL; Database=WarehouseForAutoTourism; Integrated Security=True;";
+            var query = @"Select
                     P.ProductId, 
                     P.ProductName, 
                     P.Price, 
-                    P.Description AS ProductDescription,
+                    P.Description ProductDescription,
                     A.AccessoriesId, 
                     A.AccessoryName, 
-                    A.Price AS AccessoryPrice, 
-                    A.Description AS AccessoryDescription
-                FROM Products P
-                JOIN CarCompatibility CC ON P.ProductId = CC.ProductId
-                JOIN Cars C ON CC.CarModelId = C.CarModelId
-                LEFT JOIN Accessories A ON P.ProductId = A.ProductId
-                WHERE C.Brand = @Brand 
-                  AND C.Model = @Model 
-                  AND P.ProductName LIKE @ProductName;";
+                    A.Price , 
+                    A.Description AccessoryDescription
+                From Products P
+                Join CarCompatibility CC on P.ProductId = CC.ProductId
+                Join Cars C on CC.CarModelId = C.CarModelId
+                Left join Accessories A on P.ProductId = A.ProductId
+                Where C.Brand = @Brand and C.Model = @Model and P.ProductName LIKE @ProductName;";
+
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
