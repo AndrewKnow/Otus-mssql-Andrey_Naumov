@@ -88,7 +88,7 @@ END
 
 
 --Создание процедуры для обработки сообщений из очереди
---Запуск процедуры обработает сообщения из очереди, просуммирует количество товаров ProductsSumm.
+--Запуск процедуры обработает сообщения из очереди, просуммирует количество товаров ReportProducts.
 
 --drop PROCEDURE [uspProcessMessagesFromQueue]
 CREATE PROCEDURE [dbo].[uspProcessMessagesFromQueue]
