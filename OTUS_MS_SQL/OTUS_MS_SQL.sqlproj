@@ -88,5 +88,6 @@
     <None Include="HW_14_CLR_dll_в_SQLServer\HW_14.sql" />
     <None Include="HW_14_CLR_dll_в_SQLServer\Рузультат CLR.bmp" />
     <None Include="Course_project\HW_15_ServiceBroker\HW_15.sql" />
+    <None Include="Course_project\HW_15_ServiceBroker\ServiceBroker.bmp" />
   </ItemGroup>
 </Project>
