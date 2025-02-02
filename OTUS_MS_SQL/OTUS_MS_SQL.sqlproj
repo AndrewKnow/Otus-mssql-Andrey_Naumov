@@ -70,6 +70,7 @@
     <Folder Include="Course_project\HW_12_Select" />
     <Folder Include="HW_13_Stored procedures, functions, triggers" />
     <Folder Include="HW_14_CLR_dll_в_SQLServer" />
+    <Folder Include="Course_project\HW_15_ServiceBroker" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HW_2_SELECT\HW_2.sql" />
@@ -86,5 +87,6 @@
     <None Include="HW_13_Stored procedures, functions, triggers\HW_13.sql" />
     <None Include="HW_14_CLR_dll_в_SQLServer\HW_14.sql" />
     <None Include="HW_14_CLR_dll_в_SQLServer\Рузультат CLR.bmp" />
+    <None Include="Course_project\HW_15_ServiceBroker\HW_15.sql" />
   </ItemGroup>
 </Project>
