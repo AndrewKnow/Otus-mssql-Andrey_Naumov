@@ -110,13 +110,13 @@ BEGIN
             FROM [Queue_BrokerForReport]
         ), TIMEOUT 1000;
 
-        IF @@ROWCOUNT = 0
+        IF @@ROWCOUNT = 0 -- содержит количество строк, возвращённых оператором RECEIVE.
         BEGIN
             COMMIT TRANSACTION;
             BREAK;
         END
 
-        IF @messageTypeName = N'http://schemas.microsoft.com/SQL/ServiceBroker/EndDialog'
+        IF @messageTypeName = N'http://schemas.microsoft.com/SQL/ServiceBroker/EndDialog' -- предопределённый тип сообщения в Service Broker, который указывает на завершение диалога
         BEGIN
             END CONVERSATION @conversationHandle;
             COMMIT TRANSACTION;
