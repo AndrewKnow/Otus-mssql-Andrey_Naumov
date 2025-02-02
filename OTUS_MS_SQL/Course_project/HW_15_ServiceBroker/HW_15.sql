@@ -61,7 +61,7 @@ BEGIN
         WITH ENCRYPTION = OFF;
     
     DECLARE @message XML;
-    SET @message = '<root><ProductId>' + CAST(@ProductId AS NVARCHAR(MAX)) + '</ProductId><Quantity>' + CAST(@Quantity AS NVARCHAR(MAX)) + '</Quantity></root>';
+    SET @message = '<root><ProductId>' + CAST(@ProductId AS NVARCHAR(255)) + '</ProductId><Quantity>' + CAST(@Quantity AS NVARCHAR(255)) + '</Quantity></root>';
     
     SEND ON CONVERSATION @handle
     MESSAGE TYPE [MessageType_BrokerForReport] (@message);
