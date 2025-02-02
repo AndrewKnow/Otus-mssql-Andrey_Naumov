@@ -31,10 +31,10 @@ CREATE CONTRACT [Contract_BrokerForReport] (
     [MessageType_BrokerForReport] SENT BY INITIATOR
 );
 
--- Создаем Queue
+-- Создаем очередь
 CREATE QUEUE [Queue_BrokerForReport];
 
--- Создаем Service
+-- Создаем сервис
 CREATE SERVICE [Service_BrokerForReport] ON QUEUE [Queue_BrokerForReport] ([Contract_BrokerForReport]);
 
 
