@@ -60,7 +60,7 @@ BEGIN
     DECLARE @handle UNIQUEIDENTIFIER;
 
 
-    SELECT TOP 1 @ProductId = i.ProductId, @Quantity = i.Quantity
+    SELECT @ProductId = i.ProductId, @Quantity = i.Quantity
     FROM inserted i
 
     IF @ProductId IS NULL
