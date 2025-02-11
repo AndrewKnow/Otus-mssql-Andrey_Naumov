@@ -72,6 +72,7 @@
     <Folder Include="HW_14_CLR_dll_в_SQLServer" />
     <Folder Include="Course_project\HW_15_ServiceBroker" />
     <Folder Include="Course_project\HW_16_Power_BI" />
+    <Folder Include="HW_17_OLAP" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HW_2_SELECT\HW_2.sql" />
@@ -93,5 +94,7 @@
     <None Include="Course_project\HW_15_ServiceBroker\HW_15_2.sql" />
     <None Include="Course_project\HW_15_ServiceBroker\ServiceBroker2.bmp" />
     <None Include="Course_project\HW_16_Power_BI\HW_16_Power_BI.pbix" />
+    <None Include="HW_17_OLAP\EXCEL.bmp" />
+    <None Include="HW_17_OLAP\VISUAL STUDIO.bmp" />
   </ItemGroup>
 </Project>
