@@ -8,6 +8,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 
 using TgmBot.ConnectionProperties;
+using TgmBot.FormHTML;
 
 namespace TgmBot
 {
@@ -59,18 +60,25 @@ namespace TgmBot
                     var name = message.From.FirstName;
 
                     Console.WriteLine($"Сообщение: {message.Text}"); // \n Id: {userId}\n Имя: {name}");
-
-                    if (message.Text == "/menu")
+                    switch (message.Text)
                     {
-                        await RemoveReplyKeboard(botClient, message);
-                        await SendReplyKeboard(botClient, message, 1);
+                        case "/menu":
+                            await RemoveReplyKeboard(botClient, message);
+                            await SendReplyKeboard(botClient, message, 1);
+                        break;
+
+                        case "Создать запись в товарах":
+
+                            HTML_Form.OpenBrowserWithForm();
+
+                            break;
                     }
                 }
 
                 // Обработка кнопок
                 if (update.Type == UpdateType.CallbackQuery)
                 {
-
+                    Console.WriteLine($"Обработка кнопки"); // InlineKeyboardButton не создавал
                 }
             }
             catch
