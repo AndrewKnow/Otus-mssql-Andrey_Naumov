@@ -15,6 +15,8 @@ Project("{D2ABAB84-BF74-430A-B69E-9DC6D40DDA17}") = "MultidimensionalProject", "
 EndProject
 Project("{D2ABAB84-BF74-430A-B69E-9DC6D40DDA17}") = "HW_17_MultidimensionalProject", "HW_17_MultidimensionalProject\HW_17_MultidimensionalProject.dwproj", "{7AC04B5B-2285-4E71-9F04-B1489D6C7E17}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TgmBot", "TgmBot\TgmBot.csproj", "{0583C1BA-E7FE-4E38-B93B-48E17D96C419}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,12 @@ Global
 		{7AC04B5B-2285-4E71-9F04-B1489D6C7E17}.Release|Any CPU.ActiveCfg = Development
 		{7AC04B5B-2285-4E71-9F04-B1489D6C7E17}.Release|Any CPU.Build.0 = Development
 		{7AC04B5B-2285-4E71-9F04-B1489D6C7E17}.Release|Any CPU.Deploy.0 = Development
+		{0583C1BA-E7FE-4E38-B93B-48E17D96C419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0583C1BA-E7FE-4E38-B93B-48E17D96C419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0583C1BA-E7FE-4E38-B93B-48E17D96C419}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{0583C1BA-E7FE-4E38-B93B-48E17D96C419}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{0583C1BA-E7FE-4E38-B93B-48E17D96C419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0583C1BA-E7FE-4E38-B93B-48E17D96C419}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
