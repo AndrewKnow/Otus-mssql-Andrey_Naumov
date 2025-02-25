@@ -13,19 +13,11 @@ namespace TgmBot.ConnectionProperties
         {
             StreamReader f = new("Key.txt");
             if (!f.EndOfStream)
+#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
                 Key = f.ReadLine();
+#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
             f.Close();
-            return Key;
-        }
-        public static string DB()
-        {
-            StreamReader f = new("Key.txt");
-            while (!f.EndOfStream)
-            {
-                Key = f.ReadLine();
-            }
-            f.Close();
-            return Key;
+            return !string.IsNullOrEmpty(Key) ? Key : "Нет ключа";
         }
     }
 }
