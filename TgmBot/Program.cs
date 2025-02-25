@@ -6,9 +6,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
-
 using TgmBot.ConnectionProperties;
-using TgmBot.FormHTML;
 
 namespace TgmBot
 {
@@ -69,9 +67,15 @@ namespace TgmBot
 
                         case "Создать запись в товарах":
 
-                            HTML_Form.OpenBrowserWithForm();
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductName], [CategoryId], [Price], [Description]");
 
-                            break;
+                        break;
+
+                        case "Создать запись в аксессуарах":
+
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductId], [AccessoryNameName], [CategoryId], [Price], [Description]");
+
+                        break;
                     }
                 }
 
@@ -124,15 +128,12 @@ namespace TgmBot
                         // OneTimeKeyboard = true // Скрыть клавиатуру после первого использования
                     };
 
-
                     replyKeyboardMarkup = replyKeyboard;
 
-                break;
-                
+                break;               
             }
 
-            return await botClient.SendMessage(chatId: message.Chat.Id,
-                text: "🤖 Выберите комманду", replyMarkup: replyKeyboardMarkup);
+            return await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Выберите комманду", replyMarkup: replyKeyboardMarkup);
         }
 
     }
