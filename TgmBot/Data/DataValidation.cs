@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using System.Text.RegularExpressions;
+
+namespace TgmBot.Data
+{
+    public class DataValidation
+    {
+
+        public static async Task<bool> GetValidationProduct(string txt)
+        {
+            bool check = false;
+            // Шаблон регулярного выражения
+            string pattern = @"^[\w\s]+,\s*\d+\s*,\s*\d+(?:\.\d+)?\s*,[\w\s]+$";
+
+            // Создаем объект Regex и проверяем совпадение
+            Match match = Regex.Match(txt, pattern);
+
+            // Возвращаем результат проверки
+            check = match.Success;
+
+            return check;
+        }
+
+        public static async Task<bool> GetValidationAccessories(string txt)
+        {
+            bool check = false;
+            // Шаблон регулярного выражения
+            string pattern = @"^\d+(?:\.\d+)?\,\s*[\w\s]+\,\s*\d+\s*,\s*\d+(?:\.\d+)?\s*,\s*[\w\s]+$";
+
+            // Создаем объект Regex и проверяем совпадение
+            Match match = Regex.Match(txt, pattern);
+
+            // Возвращаем результат проверки
+            check = match.Success;
+
+            return check;
+        }
+
+    }
+}

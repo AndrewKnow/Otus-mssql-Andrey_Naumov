@@ -8,6 +8,7 @@ namespace TgmBot.Data
 {
     public class Accessories
     {
+        public static bool InsertAccessories  { get; set; }
         public int ProductId { get; set; }
         public string AccessoryName { get; set; }
         public int CategoryId { get; set; }

@@ -9,6 +9,7 @@ namespace TgmBot.Data
 {
     public class Product
     {
+        public static bool InsertProduct { get; set; }
         public string ProductName { get; set; }
         public int CategoryId { get; set; }
         public decimal Price { get; set; }

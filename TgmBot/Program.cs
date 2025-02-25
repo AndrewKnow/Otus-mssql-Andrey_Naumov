@@ -7,6 +7,7 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
 using TgmBot.ConnectionProperties;
+using TgmBot.Data;
 
 namespace TgmBot
 {
@@ -52,6 +53,39 @@ namespace TgmBot
                 // Обработка сообщений
                 Message message = update.Message;
 
+                if (Product.InsertProduct)
+                {
+                    Task<bool> checkData = DataValidation.GetValidationProduct(message.Text);
+                    bool result = await checkData; // Асинхронное ожидание
+
+                    if (result)
+                    {
+                        await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Завёл продукт");
+                    }
+                    else
+                    {
+                        await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Несоответствие шаблону для ввода");
+                    }
+                    Product.InsertProduct = false;
+                }
+
+                if (Accessories.InsertAccessories)
+                {
+
+                    Task<bool> checkData = DataValidation.GetValidationAccessories(message.Text);
+                    bool result = await checkData; // Асинхронное ожидание
+
+                    if (result)
+                    {
+                        await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Завёл аксессуар");
+                    }
+                    else
+                    {
+                        await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Несоответствие шаблону для ввода");
+                    }
+                    Accessories.InsertAccessories = false;
+                }
+
                 if (update.Type == UpdateType.Message)
                 {
                     var userId = message.From.Id;
@@ -68,14 +102,15 @@ namespace TgmBot
                         case "Создать запись в товарах":
 
                             await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductName], [CategoryId], [Price], [Description]");
+                            Product.InsertProduct = true;
 
                         break;
 
                         case "Создать запись в аксессуарах":
 
                             await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductId], [AccessoryNameName], [CategoryId], [Price], [Description]");
-
-                        break;
+                            Accessories.InsertAccessories = true;
+                            break;
                     }
                 }
 
