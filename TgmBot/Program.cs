@@ -6,6 +6,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
+
 using TgmBot.ConnectionProperties;
 
 namespace TgmBot
@@ -49,14 +50,27 @@ namespace TgmBot
         {
             try
             {
+                // Обработка сообщений
                 Message message = update.Message;
-           
+
                 if (update.Type == UpdateType.Message)
                 {
                     var userId = message.From.Id;
                     var name = message.From.FirstName;
 
-                    Console.WriteLine($"Сообщение: {message.Text}\n Id: {userId}\n Имя: {name}");
+                    Console.WriteLine($"Сообщение: {message.Text}"); // \n Id: {userId}\n Имя: {name}");
+
+                    if (message.Text == "/menu")
+                    {
+                        await RemoveReplyKeboard(botClient, message);
+                        await SendReplyKeboard(botClient, message, 1);
+                    }
+                }
+
+                // Обработка кнопок
+                if (update.Type == UpdateType.CallbackQuery)
+                {
+
                 }
             }
             catch
@@ -64,5 +78,54 @@ namespace TgmBot
 
             }
         }
+
+        static async Task<Message> RemoveReplyKeboard(ITelegramBotClient botClient, Message message)
+        {
+            return await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Запускаю меню управления базой данных склада ..."
+                         , replyMarkup: new ReplyKeyboardRemove());
+        }
+
+        static async Task<Message> SendReplyKeboard(ITelegramBotClient botClient, Message message, int type)
+        {
+            ReplyKeyboardMarkup? replyKeyboardMarkup = null;
+            switch (type)
+            {
+                case 1:
+                    // Создаем клавиатуру с двумя кнопками
+                    var replyKeyboard = new ReplyKeyboardMarkup(new[]
+                    {
+                        new KeyboardButton[] { 
+                            "Создать запись в товарах",
+                            "Создать запись в аксессуарах"
+                        },
+                        [
+                            "Вывести TOP 10 товаров",
+                            "Вывести TOP 10 аксессуаров"
+                        ],
+                        [
+                            "Найти товар по названию",
+                            "Найти аксессуар по названию"
+                        ],
+                        [
+                            "Изменить товар",
+                            "Изменить аксессуар"
+                        ]
+                    })
+                    {
+                        ResizeKeyboard = true, // Автоматически адаптировать размер клавиатуры
+                        // OneTimeKeyboard = true // Скрыть клавиатуру после первого использования
+                    };
+
+
+                    replyKeyboardMarkup = replyKeyboard;
+
+                break;
+                
+            }
+
+            return await botClient.SendMessage(chatId: message.Chat.Id,
+                text: "🤖 Выберите комманду", replyMarkup: replyKeyboardMarkup);
+        }
+
     }
 }
