@@ -110,7 +110,8 @@ namespace TgmBot
 
                             await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductId], [AccessoryNameName], [CategoryId], [Price], [Description]");
                             Accessories.InsertAccessories = true;
-                            break;
+
+                        break;
                     }
                 }
 

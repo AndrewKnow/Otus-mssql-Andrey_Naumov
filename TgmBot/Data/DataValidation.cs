@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Text.RegularExpressions;
+using TgmBot.ConnectionProperties;
 
 namespace TgmBot.Data
 {
@@ -23,6 +24,12 @@ namespace TgmBot.Data
             // Возвращаем результат проверки
             check = match.Success;
 
+            if (check)
+            {
+                Repository repository = new Repository();
+                await repository.InsertPruduct(txt);
+            }
+
             return check;
         }
 
@@ -37,6 +44,12 @@ namespace TgmBot.Data
 
             // Возвращаем результат проверки
             check = match.Success;
+
+            if (check)
+            {
+                Repository repository = new Repository();
+                await repository.InsertAccessories(txt);
+            }
 
             return check;
         }
