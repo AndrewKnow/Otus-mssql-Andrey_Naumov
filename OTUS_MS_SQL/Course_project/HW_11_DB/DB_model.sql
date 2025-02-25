@@ -68,14 +68,15 @@ CREATE TABLE Accessories (
 	AccessoryName NVARCHAR(100) NOT NULL,
 	CategoryId INT NOT NULL,
 	Price DECIMAL(10,2) NOT NULL CHECK (Price >= 0),  -- Ограничение на цену аксессуара
-    Description NVARCHAR(255)
+    Description NVARCHAR(255),
+    DateAdded DATETIME2 DEFAULT GETDATE(), -- Добавлен дата внесения товара, по умолчанию будет подставлена текущая дата  -- 06.01.2025
+    IsActive BIT DEFAULT 1,  -- Добавлен статус товара -- 06.01.2025
     CONSTRAINT FK_Accessories_Products FOREIGN KEY (ProductId) REFERENCES Products(ProductId),
 	CONSTRAINT CK_Accessories_Name CHECK (LEN(AccessoryName) > 0)  -- Ограничение на пустое имя аксессуара
 );
 
 -- Индекс на ProductId для быстрого поиска аксессуаров по товарам -- 06.01.2025
 --CREATE NONCLUSTERED INDEX IX_Accessories_ProductId ON Accessories (ProductId);
-
 
 --6. Остатки на складе. Подразумевается ввод данных по количеству на дату.
 CREATE TABLE ProductsStockQuantity  (
@@ -89,7 +90,6 @@ CREATE TABLE ProductsStockQuantity  (
 
 -- Индекс на ProductId для быстрого поиска остатков по товарам -- 06.01.2025
 --CREATE NONCLUSTERED INDEX IX_ProductsStock_ProductId ON ProductsStockQuantity (ProductId);
-
 
 --7. Остатки на складе для аксессуаров.
 CREATE TABLE AccessoriesStockQuantity  (
