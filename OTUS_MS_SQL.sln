@@ -15,7 +15,9 @@ Project("{D2ABAB84-BF74-430A-B69E-9DC6D40DDA17}") = "MultidimensionalProject", "
 EndProject
 Project("{D2ABAB84-BF74-430A-B69E-9DC6D40DDA17}") = "HW_17_MultidimensionalProject", "HW_17_MultidimensionalProject\HW_17_MultidimensionalProject.dwproj", "{7AC04B5B-2285-4E71-9F04-B1489D6C7E17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TgmBot", "TgmBot\TgmBot.csproj", "{0583C1BA-E7FE-4E38-B93B-48E17D96C419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgmBot", "TgmBot\TgmBot.csproj", "{0583C1BA-E7FE-4E38-B93B-48E17D96C419}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppForBot", "WebAppForBot\WebAppForBot.csproj", "{19C044E4-6EA2-40C0-BE51-BA41D73F7585}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,12 @@ Global
 		{0583C1BA-E7FE-4E38-B93B-48E17D96C419}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{0583C1BA-E7FE-4E38-B93B-48E17D96C419}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0583C1BA-E7FE-4E38-B93B-48E17D96C419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19C044E4-6EA2-40C0-BE51-BA41D73F7585}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19C044E4-6EA2-40C0-BE51-BA41D73F7585}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19C044E4-6EA2-40C0-BE51-BA41D73F7585}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{19C044E4-6EA2-40C0-BE51-BA41D73F7585}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{19C044E4-6EA2-40C0-BE51-BA41D73F7585}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19C044E4-6EA2-40C0-BE51-BA41D73F7585}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
