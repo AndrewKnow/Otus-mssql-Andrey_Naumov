@@ -51,74 +51,82 @@ namespace TgmBot
             try
             {
                 // Обработка сообщений
-                Message message = update.Message;
 
-                if (Product.InsertProduct)
+                if (update.Message != null)
                 {
-                    Task<bool> checkData = DataValidation.GetValidationProduct(message.Text);
-                    bool result = await checkData; // Асинхронное ожидание
+                    Message message = update.Message;
 
-                    if (result)
+                    if (Product.InsertProduct)
                     {
-                        await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Завёл продукт");
+
+
+
+              
+                        Task<bool> checkData = DataValidation.GetValidationProduct(message.Text);
+                        bool result = await checkData; // Асинхронное ожидание
+
+                        if (result)
+                        {
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Завёл продукт");
+                        }
+                        else
+                        {
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Несоответствие шаблону для ввода");
+                        }
+                        Product.InsertProduct = false;
                     }
-                    else
+
+                    if (Accessories.InsertAccessories)
                     {
-                        await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Несоответствие шаблону для ввода");
+
+                        Task<bool> checkData = DataValidation.GetValidationAccessories(message.Text);
+                        bool result = await checkData; // Асинхронное ожидание
+
+                        if (result)
+                        {
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Завёл аксессуар");
+                        }
+                        else
+                        {
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Несоответствие шаблону для ввода");
+                        }
+                        Accessories.InsertAccessories = false;
                     }
-                    Product.InsertProduct = false;
-                }
 
-                if (Accessories.InsertAccessories)
-                {
-
-                    Task<bool> checkData = DataValidation.GetValidationAccessories(message.Text);
-                    bool result = await checkData; // Асинхронное ожидание
-
-                    if (result)
+                    if (update.Type == UpdateType.Message)
                     {
-                        await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Завёл аксессуар");
+                        var userId = message.From.Id;
+                        var name = message.From.FirstName;
+
+                        Console.WriteLine($"Сообщение: {message.Text}"); // \n Id: {userId}\n Имя: {name}");
+                        switch (message.Text)
+                        {
+                            case "/menu":
+                                await RemoveReplyKeboard(botClient, message);
+                                await SendReplyKeboard(botClient, message, 1);
+                            break;
+
+                            case "Создать запись в товарах":
+
+                                await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductName], [CategoryId], [Price], [Description]");
+                                Product.InsertProduct = true;
+
+                            break;
+
+                            case "Создать запись в аксессуарах":
+
+                                await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductId], [AccessoryNameName], [CategoryId], [Price], [Description]");
+                                Accessories.InsertAccessories = true;
+
+                            break;
+                        }
                     }
-                    else
+
+                    // Обработка кнопок
+                    if (update.Type == UpdateType.CallbackQuery)
                     {
-                        await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Несоответствие шаблону для ввода");
+                        Console.WriteLine($"Обработка кнопки"); // InlineKeyboardButton не создавал
                     }
-                    Accessories.InsertAccessories = false;
-                }
-
-                if (update.Type == UpdateType.Message)
-                {
-                    var userId = message.From.Id;
-                    var name = message.From.FirstName;
-
-                    Console.WriteLine($"Сообщение: {message.Text}"); // \n Id: {userId}\n Имя: {name}");
-                    switch (message.Text)
-                    {
-                        case "/menu":
-                            await RemoveReplyKeboard(botClient, message);
-                            await SendReplyKeboard(botClient, message, 1);
-                        break;
-
-                        case "Создать запись в товарах":
-
-                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductName], [CategoryId], [Price], [Description]");
-                            Product.InsertProduct = true;
-
-                        break;
-
-                        case "Создать запись в аксессуарах":
-
-                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductId], [AccessoryNameName], [CategoryId], [Price], [Description]");
-                            Accessories.InsertAccessories = true;
-
-                        break;
-                    }
-                }
-
-                // Обработка кнопок
-                if (update.Type == UpdateType.CallbackQuery)
-                {
-                    Console.WriteLine($"Обработка кнопки"); // InlineKeyboardButton не создавал
                 }
             }
             catch
@@ -148,15 +156,12 @@ namespace TgmBot
                         },
                         [
                             "Вывести TOP 10 товаров",
-                            "Вывести TOP 10 аксессуаров"
+                            "Вывести TOP 10 аксессуаров",
+                            "Вывести TOP 10 авто"
                         ],
                         [
-                            "Найти товар по названию",
-                            "Найти аксессуар по названию"
-                        ],
-                        [
-                            "Изменить товар",
-                            "Изменить аксессуар"
+                            "Внести количество товара по Id",
+                            "Внести количество аксессуаров по Id"
                         ]
                     })
                     {
