@@ -97,6 +97,9 @@ namespace TgmBot
                         var name = message.From.FirstName;
 
                         Console.WriteLine($"Сообщение: {message.Text}"); // \n Id: {userId}\n Имя: {name}");
+
+                        Repository repository = new Repository();
+
                         switch (message.Text)
                         {
                             case "/menu":
@@ -120,7 +123,7 @@ namespace TgmBot
 
                             case "Вывести TOP 10 авто":
 
-                                Repository repository = new Repository();
+                                
                                 Task<string> sb = repository.SelectTop10Cars();
                                 string resultSB = await sb;
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB);
@@ -128,12 +131,18 @@ namespace TgmBot
                             break;
 
                             case "Вывести TOP 1 товаров":
-
-                            break;
+ 
+                                Task<string> sb2 = repository.SelectTop1("Products");
+                                string resultSB2 = await sb2;
+                                await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB2);
+                                break;
 
                             case "Вывести TOP 1 аксессуаров":
-
-                            break;
+   
+                                Task<string> sb3 = repository.SelectTop1("Accessories");
+                                string resultSB3 = await sb3;
+                                await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB3);
+                                break;
 
                         }
                     }
