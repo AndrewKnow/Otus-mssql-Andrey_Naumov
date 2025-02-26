@@ -1,4 +1,5 @@
 ﻿
+// AN_SQLproject
 using Telegram.Bot;
 using Telegram.Bot.Extensions;
 using Telegram.Bot.Polling;
@@ -58,9 +59,6 @@ namespace TgmBot
 
                     if (Product.InsertProduct)
                     {
-
-
-
               
                         Task<bool> checkData = DataValidation.GetValidationProduct(message.Text);
                         bool result = await checkData; // Асинхронное ожидание
@@ -119,6 +117,24 @@ namespace TgmBot
                                 Accessories.InsertAccessories = true;
 
                             break;
+
+                            case "Вывести TOP 10 авто":
+
+                                Repository repository = new Repository();
+                                Task<string> sb = repository.SelectTop10Cars();
+                                string resultSB = await sb;
+                                await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB);
+
+                            break;
+
+                            case "Вывести TOP 1 товаров":
+
+                            break;
+
+                            case "Вывести TOP 1 аксессуаров":
+
+                            break;
+
                         }
                     }
 
@@ -129,9 +145,9 @@ namespace TgmBot
                     }
                 }
             }
-            catch
+            catch (Exception ex) 
             {
-
+                Console.WriteLine($"{ex.Message}"); // InlineKeyboardButton не создавал
             }
         }
 
@@ -155,13 +171,13 @@ namespace TgmBot
                             "Создать запись в аксессуарах"
                         },
                         [
-                            "Вывести TOP 10 товаров",
-                            "Вывести TOP 10 аксессуаров",
+                            "Вывести TOP 1 товаров",
+                            "Вывести TOP 1 аксессуаров",
                             "Вывести TOP 10 авто"
                         ],
                         [
                             "Внести количество товара по Id",
-                            "Внести количество аксессуаров по Id"
+                            "Вывести количество товара по Id"
                         ]
                     })
                     {
@@ -176,6 +192,5 @@ namespace TgmBot
 
             return await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Выберите комманду", replyMarkup: replyKeyboardMarkup);
         }
-
     }
 }

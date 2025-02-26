@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.Extensions.Primitives;
+using System;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace TgmBot.ConnectionProperties
@@ -71,5 +74,46 @@ namespace TgmBot.ConnectionProperties
             }
         }
 
+        public async Task<string> SelectTop10Cars()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("SELECT TOP 10 Brand, Model FROM CARS ORDER BY CarModelId ASC", connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+
+                            // Вывод заголовков столбцов
+                            sb.AppendLine(string.Format("{0,10} | {1,-10}", "Model", "Brand"));
+                            sb.AppendLine(new string('-', 35)); // Разделитель
+
+                            while (reader.Read())
+                            {
+                                // Length
+
+                                int a = reader.GetString(0).Length;
+                                int b = reader.GetString(1).Length;
+                                char symbol = '\t';
+
+                                string repeated = new string(symbol, 25 - a);
+      
+
+                                //Telegram не поддерживает выравнивание текста с использованием пробелов
+                                sb.Append(reader.GetString(1)  + "   (" + reader.GetString(0) + ")\n");
+                                //sb.AppendLine(string.Format("{0,-15} | {1,-15}", reader.GetString(1), reader.GetString(0)));
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
     }
 }
