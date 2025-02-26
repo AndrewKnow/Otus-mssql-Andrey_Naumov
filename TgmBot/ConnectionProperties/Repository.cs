@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Primitives;
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Reflection;
 using System.Text;
 using TgmBot.Data;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
+//ADO.NET
 
 namespace TgmBot.ConnectionProperties
 {
@@ -36,7 +37,7 @@ namespace TgmBot.ConnectionProperties
                     command.Parameters.AddWithValue("@Price", param3);
                     command.Parameters.AddWithValue("@Description", param4);
 
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync();
                 }   
             }
         }
@@ -66,7 +67,7 @@ namespace TgmBot.ConnectionProperties
                     command.Parameters.AddWithValue("@Price", param4);
                     command.Parameters.AddWithValue("@Description", param5);
 
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync();
                 }
             }
         }
@@ -80,7 +81,7 @@ namespace TgmBot.ConnectionProperties
                 connection.Open();
                 using (SqlCommand command = new SqlCommand("SELECT TOP 10 Brand, Model FROM CARS ORDER BY CarModelId ASC;", connection))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {
                         if (reader.HasRows)
                         {
