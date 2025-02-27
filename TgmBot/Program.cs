@@ -57,6 +57,41 @@ namespace TgmBot
                 {
                     Message message = update.Message;
 
+
+                    if (AccessoriesStockQuantity.UpdateAccessoriesQuantity)
+                    {
+                        Task<bool> checkData = DataValidation.GetValidationQuantity("AccessoriesStockQuantity", message.Text);
+                        bool result = await checkData; // Асинхронное ожидание
+
+                        if (result)
+                        {
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Завёл продукт");
+                        }
+                        else
+                        {
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Несоответствие шаблону для ввода");
+                        }
+
+                        AccessoriesStockQuantity.UpdateAccessoriesQuantity = false;
+                    }
+
+                    if (ProductsStockQuantity.UpdateProductQuantity)
+                    {
+                        Task<bool> checkData = DataValidation.GetValidationQuantity("ProductsStockQuantity", message.Text);
+                        bool result = await checkData; // Асинхронное ожидание
+
+                        if (result)
+                        {
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Завёл продукт");
+                        }
+                        else
+                        {
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Несоответствие шаблону для ввода");
+                        }
+
+                        ProductsStockQuantity.UpdateProductQuantity = false;
+                    }
+
                     if (Product.InsertProduct)
                     {
               
@@ -142,7 +177,22 @@ namespace TgmBot
                                 Task<string> sb3 = repository.SelectTop1("Accessories");
                                 string resultSB3 = await sb3;
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB3);
+                            break;
+
+                            case "Внести количество товара по Id":
+
+                                await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductsQuantityId], [Quantity]");
+                                ProductsStockQuantity.UpdateProductQuantity = true;
+
                                 break;
+                            
+                            case "Вывести количество товара по Id":
+
+                                await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [AccessoriesQuantityId], [Quantity]");
+                                AccessoriesStockQuantity.UpdateAccessoriesQuantity = true;
+                                 
+                                break;
+
 
                         }
                     }
@@ -186,7 +236,7 @@ namespace TgmBot
                         ],
                         [
                             "Внести количество товара по Id",
-                            "Вывести количество товара по Id"
+                            "Вывести количество аксессуаров по Id"
                         ]
                     })
                     {

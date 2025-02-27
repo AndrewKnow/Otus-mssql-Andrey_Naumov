@@ -54,5 +54,22 @@ namespace TgmBot.Data
             return check;
         }
 
+        public static async Task<bool> GetValidationQuantity(string txt, string tbl)
+        {
+            bool check = false;
+            string pattern = @"^\d+\s*,\s*\d+(\.\d+)?$";
+
+            Match match = Regex.Match(txt, pattern);
+
+            // Возвращаем результат проверки
+            check = match.Success;
+
+            if (check)
+            {
+                Repository repository = new Repository();
+                await repository.UpdateQuantity(txt, tbl);
+            }
+            return check;
+        }
     }
 }

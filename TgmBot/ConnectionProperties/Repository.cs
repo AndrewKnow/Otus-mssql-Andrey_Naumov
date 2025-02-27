@@ -146,5 +146,44 @@ namespace TgmBot.ConnectionProperties
             return sb.ToString();
         }
 
+        public async Task UpdateQuantity(string tbl, string txt)
+        {
+            string QuantityId = null;
+
+            var quantityMap = new Dictionary<string, string>
+            {
+                { "AccessoriesStockQuantity", "AccessoriesQuantityId" },
+                { "ProductsStockQuantity", "ProductsQuantityId" }
+            };
+
+            if (quantityMap.ContainsKey(tbl))
+            {
+                QuantityId = quantityMap[tbl];
+            }
+            else
+            {
+                return;
+            }
+
+            string[] parts = txt.Split(',');
+
+            string param1 = parts[0].Trim();
+            string param2 = parts[1].Trim();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var sqlQ = $"UPDATE {tbl} Set Quantity = @setQuantity Where {QuantityId} = @setQuantityId";
+
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(sqlQ, connection))
+                {
+                    command.Parameters.AddWithValue("@setQuantity", param1);
+                    command.Parameters.AddWithValue("@setQuantityId", param2);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
     }
 }
