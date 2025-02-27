@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
 using System;
-using Microsoft.Data.SqlClient;
+using System.Data.SqlClient;
 using System.Reflection;
 using System.Text;
 using TgmBot.Data;
@@ -148,17 +148,26 @@ namespace TgmBot.ConnectionProperties
 
         public async Task UpdateQuantity(string tbl, string txt)
         {
-            string QuantityId = null;
+            string QuantitySource = null;
+            string QuantityID= null;
 
             var quantityMap = new Dictionary<string, string>
             {
-                { "AccessoriesStockQuantity", "AccessoriesQuantityId" },
-                { "ProductsStockQuantity", "ProductsQuantityId" }
+                { "AccessoriesStockQuantity", "TgmBot_Accessories" },
+                { "ProductsStockQuantity", "TgmBot_Products" }
             };
 
             if (quantityMap.ContainsKey(tbl))
             {
-                QuantityId = quantityMap[tbl];
+                QuantitySource = quantityMap[tbl];
+                if (QuantitySource == "TgmBot_Accessories") 
+                {
+                    QuantityID = "[AccessoriesId]";
+                }
+                else 
+                {
+                    QuantityID = "[ProductId]";
+                }
             }
             else
             {
@@ -169,17 +178,19 @@ namespace TgmBot.ConnectionProperties
 
             string param1 = parts[0].Trim();
             string param2 = parts[1].Trim();
+            string param3 = QuantitySource;
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                var sqlQ = $"UPDATE {tbl} Set Quantity = @setQuantity Where {QuantityId} = @setQuantityId";
+            { 
+                var sqlQ = $"INSERT INTO {tbl} ([Quantity], {QuantityID}, [QuantitySource]) VALUES (@setQuantity, @setQuantityId, @QuantitySource);";
+
 
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(sqlQ, connection))
                 {
-                    command.Parameters.AddWithValue("@setQuantity", param1);
-                    command.Parameters.AddWithValue("@setQuantityId", param2);
-
+                    command.Parameters.AddWithValue("@setQuantity", param2);
+                    command.Parameters.AddWithValue("@setQuantityId", param1);
+                    command.Parameters.AddWithValue("@QuantitySource", param3);
                     await command.ExecuteNonQueryAsync();
                 }
             }

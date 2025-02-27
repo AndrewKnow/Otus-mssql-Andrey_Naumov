@@ -60,12 +60,12 @@ namespace TgmBot
 
                     if (AccessoriesStockQuantity.UpdateAccessoriesQuantity)
                     {
-                        Task<bool> checkData = DataValidation.GetValidationQuantity("AccessoriesStockQuantity", message.Text);
+                        Task<bool> checkData = DataValidation.GetValidationQuantity(message.Text, "AccessoriesStockQuantity");
                         bool result = await checkData; // Асинхронное ожидание
 
                         if (result)
                         {
-                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Завёл продукт");
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Ввёл количество аксуссуара");
                         }
                         else
                         {
@@ -77,12 +77,12 @@ namespace TgmBot
 
                     if (ProductsStockQuantity.UpdateProductQuantity)
                     {
-                        Task<bool> checkData = DataValidation.GetValidationQuantity("ProductsStockQuantity", message.Text);
+                        Task<bool> checkData = DataValidation.GetValidationQuantity(message.Text, "ProductsStockQuantity");
                         bool result = await checkData; // Асинхронное ожидание
 
                         if (result)
                         {
-                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Завёл продукт");
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Ввёл количество продукта\"");
                         }
                         else
                         {
@@ -186,7 +186,7 @@ namespace TgmBot
 
                                 break;
                             
-                            case "Вывести количество товара по Id":
+                            case "Внести количество аксессуаров по Id":
 
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [AccessoriesQuantityId], [Quantity]");
                                 AccessoriesStockQuantity.UpdateAccessoriesQuantity = true;
@@ -236,7 +236,7 @@ namespace TgmBot
                         ],
                         [
                             "Внести количество товара по Id",
-                            "Вывести количество аксессуаров по Id"
+                            "Внести количество аксессуаров по Id"
                         ]
                     })
                     {
