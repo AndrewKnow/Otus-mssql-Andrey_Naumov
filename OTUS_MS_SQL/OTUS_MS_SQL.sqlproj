@@ -98,6 +98,6 @@
     <None Include="HW_17_OLAP\EXCEL.bmp" />
     <None Include="HW_17_OLAP\VISUAL STUDIO.bmp" />
     <None Include="HW_18_hint, dmv\HW_18.sql" />
-    <None Include="HW_18_hint, dmv\HW_18.png" />
+    <None Include="HW_18_hint, dmv\HW_18.bmp" />
   </ItemGroup>
 </Project>
