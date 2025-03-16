@@ -68,7 +68,7 @@ namespace TgmBot.Data
             if (check)
             {
                 Repository repository = new Repository();
-                await repository.UpdateQuantity(tbl, txt);
+                 await repository.UpdateQuantity(tbl, txt);
             }
             return check;
         }
