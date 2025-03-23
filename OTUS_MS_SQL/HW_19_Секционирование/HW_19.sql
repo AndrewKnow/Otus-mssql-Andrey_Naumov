@@ -15,9 +15,15 @@ Select min(TransactionOccurredWhen) as от, max(TransactionOccurredWhen) as д�
 ALTER DATABASE [WideWorldImporters] ADD FILEGROUP [PARTITION_FILEGROUP]
 GO
 
-ALTER DATABASE [WideWorldImporters] ADD FILE 
-( NAME = N'HW_19', FILENAME =  N'C:\Program Files\Microsoft SQL Server\MSSQL16.OTUSSQL\MSSQL\DATA\PARTITION_FILEGROUP.ndf' , 
-SIZE = 1097152KB , FILEGROWTH = 65536KB ) TO FILEGROUP [PARTITION_FILEGROUP]
+ALTER DATABASE [WideWorldImporters] 
+ADD FILE 
+( 
+    NAME = N'HW_19', 
+    FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.OTUSSQL\MSSQL\DATA\PARTITION_FILEGROUP.ndf', 
+    SIZE = 512000KB,
+    FILEGROWTH = 32768KB
+) 
+TO FILEGROUP [PARTITION_FILEGROUP]
 GO
 
 --Создание функциии для определения секций
