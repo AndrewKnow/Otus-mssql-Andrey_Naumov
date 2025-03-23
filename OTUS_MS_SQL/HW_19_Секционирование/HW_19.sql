@@ -11,7 +11,6 @@ use WideWorldImporters
 -- [Warehouse].[StockItemTransactions]
 Select min(TransactionOccurredWhen) as от, max(TransactionOccurredWhen) as до From  [Warehouse].[StockItemTransactions]
 
-
 -- Создание новой файловой группы
 ALTER DATABASE [WideWorldImporters] ADD FILEGROUP [PARTITION_FILEGROUP]
 GO
@@ -45,6 +44,8 @@ CREATE TABLE StockItemTransactionPartitioned (
 ) 
 ON [PS_TransactionOccurredWhen](TransactionOccurredWhen);
 
+
+-- Перенос данных через BCP
 Declare @out varchar(250);
 set @out = N'bcp WideWorldImporters.Warehouse.StockItemTransactions OUT "C:\BCP.txt" -T -c -S ' + @@SERVERNAME;
 Print @out;
