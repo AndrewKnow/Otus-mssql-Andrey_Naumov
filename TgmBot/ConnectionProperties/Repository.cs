@@ -121,7 +121,7 @@ namespace TgmBot.ConnectionProperties
             {
                 connection.Open();
                 // Изменено: добавляем "*" в запрос для получения всех столбцов
-                using (SqlCommand command = new SqlCommand($"SELECT TOP 1 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 1)}Id desc;", connection))
+                using (SqlCommand command = new SqlCommand(tbl == "Accessories" ? $"SELECT TOP 1 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 0)}Id desc;":$"SELECT TOP 1 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 1)}Id desc;", connection))
                 {
                     using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {

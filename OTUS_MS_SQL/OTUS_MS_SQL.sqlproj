@@ -74,6 +74,7 @@
     <Folder Include="Course_project\HW_16_Power_BI" />
     <Folder Include="HW_17_OLAP" />
     <Folder Include="HW_18_hint, dmv" />
+    <Folder Include="HW_19_Секционирование" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HW_2_SELECT\HW_2.sql" />
@@ -99,5 +100,6 @@
     <None Include="HW_17_OLAP\VISUAL STUDIO.bmp" />
     <None Include="HW_18_hint, dmv\HW_18.sql" />
     <None Include="HW_18_hint, dmv\HW_18.bmp" />
+    <None Include="HW_19_Секционирование\HW_19.sql" />
   </ItemGroup>
 </Project>
