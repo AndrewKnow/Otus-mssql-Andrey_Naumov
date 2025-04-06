@@ -101,5 +101,6 @@
     <None Include="HW_18_hint, dmv\HW_18.sql" />
     <None Include="HW_18_hint, dmv\HW_18.bmp" />
     <None Include="HW_19_Секционирование\HW_19.sql" />
+    <None Include="Course_project\INSERT _DEMO_.sql" />
   </ItemGroup>
 </Project>
