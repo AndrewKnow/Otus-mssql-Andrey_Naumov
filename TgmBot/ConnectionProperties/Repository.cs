@@ -72,14 +72,14 @@ namespace TgmBot.ConnectionProperties
             }
         }
 
-        public async Task<string> SelectTop10Cars()
+        public async Task<string> SelectTop20Cars()
         {
             StringBuilder sb = new StringBuilder();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT TOP 10 Brand, Model FROM CARS ORDER BY CarModelId ASC;", connection))
+                using (SqlCommand command = new SqlCommand("SELECT TOP 20 Brand, Model FROM CARS ORDER BY CarModelId ASC;", connection))
                 {
                     using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {
@@ -114,14 +114,14 @@ namespace TgmBot.ConnectionProperties
             return sb.ToString();
         }
 
-        public async Task<string> SelectTop1(string tbl)
+        public async Task<string> SelectTop5(string tbl)
         {
             StringBuilder sb = new StringBuilder();
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 // Изменено: добавляем "*" в запрос для получения всех столбцов
-                using (SqlCommand command = new SqlCommand(tbl == "Accessories" ? $"SELECT TOP 1 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 0)}Id desc;":$"SELECT TOP 1 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 1)}Id desc;", connection))
+                using (SqlCommand command = new SqlCommand(tbl == "Accessories" ? $"SELECT TOP 5 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 0)}Id desc;":$"SELECT TOP 5 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 1)}Id desc;", connection))
                 {
                     using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {

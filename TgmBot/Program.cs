@@ -156,25 +156,25 @@ namespace TgmBot
 
                             break;
 
-                            case "Вывести TOP 10 авто":
+                            case "Вывести TOP 20 авто":
 
                                 
-                                Task<string> sb = repository.SelectTop10Cars();
+                                Task<string> sb = repository.SelectTop20Cars();
                                 string resultSB = await sb;
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB);
 
                             break;
 
-                            case "Вывести TOP 1 товаров":
+                            case "Вывести TOP 5 товаров":
  
-                                Task<string> sb2 = repository.SelectTop1("Products");
+                                Task<string> sb2 = repository.SelectTop5("Products");
                                 string resultSB2 = await sb2;
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB2);
                                 break;
 
-                            case "Вывести TOP 1 аксессуаров":
+                            case "Вывести TOP 5 аксессуаров":
    
-                                Task<string> sb3 = repository.SelectTop1("Accessories");
+                                Task<string> sb3 = repository.SelectTop5("Accessories");
                                 string resultSB3 = await sb3;
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB3);
                             break;
@@ -194,6 +194,10 @@ namespace TgmBot
                                 break;
 
 
+                            case "Количество товара на складе":
+
+      
+                                break;
                         }
                     }
 
@@ -230,13 +234,17 @@ namespace TgmBot
                             "Создать запись в аксессуарах"
                         },
                         [
-                            "Вывести TOP 1 товаров",
-                            "Вывести TOP 1 аксессуаров",
-                            "Вывести TOP 10 авто"
+                            "Вывести TOP 5 товаров",
+                            "Вывести TOP 5 аксессуаров",
+                            "Вывести TOP 20 авто"
                         ],
                         [
                             "Внести количество товара по Id",
                             "Внести количество аксессуаров по Id"
+                        ]
+                        ,
+                        [
+                            "Количество товара на складе",
                         ]
                     })
                     {
