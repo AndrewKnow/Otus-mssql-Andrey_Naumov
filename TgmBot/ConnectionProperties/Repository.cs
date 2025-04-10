@@ -138,6 +138,7 @@ namespace TgmBot.ConnectionProperties
 
                                     sb.AppendLine($"{columnName} - {columnValue}"); // Формируем строку "заголовок - значение"
                                 }
+                                sb.AppendLine("\n------------------");
                             }
                         }
                     }
