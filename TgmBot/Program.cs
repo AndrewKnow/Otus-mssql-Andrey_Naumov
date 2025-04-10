@@ -179,25 +179,29 @@ namespace TgmBot
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB3);
                             break;
 
-                            case "Внести количество товара по Id":
+                            case "Внести количество по Id товара":
 
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductsQuantityId], [Quantity]");
                                 ProductsStockQuantity.UpdateProductQuantity = true;
-
                                 break;
                             
-                            case "Внести количество аксессуаров по Id":
+                            case "Внести количество по Id аксессуара":
 
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [AccessoriesQuantityId], [Quantity]");
                                 AccessoriesStockQuantity.UpdateAccessoriesQuantity = true;
-                                 
-                                break;
+                            break;
 
+                            case "Списать количество по Id товара":
+                            break;
+
+                            case "Списать количество по Id аксессуара":
+                            break;
 
                             case "Количество товара на складе":
+                            break;
 
-      
-                                break;
+                            case "Количество аксессуаров на складе":
+                            break;
                         }
                     }
 
@@ -243,13 +247,14 @@ namespace TgmBot
                             "Внести количество по Id аксессуара"
                         ]
                         ,
-                         [
+                        [
                             "Списать количество по Id товара",
                             "Списать количество по Id аксессуара"
                         ]
                         ,
                         [
                             "Количество товара на складе",
+                            "Количество аксессуаров на складе"
                         ]
                     })
                     {
