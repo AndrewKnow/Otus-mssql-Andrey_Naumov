@@ -65,7 +65,7 @@ namespace TgmBot
 
                         if (result)
                         {
-                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Ввёл количество аксуссуара");
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Ввёл количество аксессуара");
                         }
                         else
                         {
@@ -82,7 +82,7 @@ namespace TgmBot
 
                         if (result)
                         {
-                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Ввёл количество продукта\"");
+                            await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Ввёл количество продукта");
                         }
                         else
                         {
@@ -179,22 +179,16 @@ namespace TgmBot
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB3);
                             break;
 
-                            case "Внести количество по Id товара":
+                            case "Внести/Списать количество по Id товара":
 
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [ProductsQuantityId], [Quantity]");
                                 ProductsStockQuantity.UpdateProductQuantity = true;
                                 break;
                             
-                            case "Внести количество по Id аксессуара":
+                            case "Внести/Списать количество по Id аксессуара":
 
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: "🤖 Введите через запятую [AccessoriesQuantityId], [Quantity]");
                                 AccessoriesStockQuantity.UpdateAccessoriesQuantity = true;
-                            break;
-
-                            case "Списать количество по Id товара":
-                            break;
-
-                            case "Списать количество по Id аксессуара":
                             break;
 
                             case "Количество товара на складе":
@@ -243,13 +237,8 @@ namespace TgmBot
                             "Вывести TOP 20 авто"
                         ],
                         [
-                            "Внести количество по Id товара",
-                            "Внести количество по Id аксессуара"
-                        ]
-                        ,
-                        [
-                            "Списать количество по Id товара",
-                            "Списать количество по Id аксессуара"
+                            "Внести/Списать количество по Id товара",
+                            "Внести/Списать количество по Id аксессуара"
                         ]
                         ,
                         [

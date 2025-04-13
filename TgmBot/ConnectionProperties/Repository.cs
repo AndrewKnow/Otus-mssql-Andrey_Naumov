@@ -1,10 +1,5 @@
-﻿using Microsoft.Extensions.Primitives;
-using System;
-using System.Data.SqlClient;
-using System.Reflection;
+﻿using System.Data.SqlClient;
 using System.Text;
-using TgmBot.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 //ADO.NET
 
@@ -18,9 +13,9 @@ namespace TgmBot.ConnectionProperties
         {
             string[] parts = txt.Split(',');
 
-            string param1 = parts[0].Trim();         
-            string param2 = parts[1].Trim();         
-            string param3 = parts[2].Trim();         
+            string param1 = parts[0].Trim();
+            string param2 = parts[1].Trim();
+            string param3 = parts[2].Trim();
             string param4 = parts[3].Trim();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -38,7 +33,7 @@ namespace TgmBot.ConnectionProperties
                     command.Parameters.AddWithValue("@Description", param4);
 
                     await command.ExecuteNonQueryAsync();
-                }   
+                }
             }
         }
 
@@ -99,10 +94,10 @@ namespace TgmBot.ConnectionProperties
                                 char symbol = '\t';
 
                                 string repeated = new string(symbol, 25 - a);
-      
+
 
                                 //Telegram не поддерживает выравнивание текста с использованием пробелов
-                                sb.Append(reader.GetString(1)  + "   (" + reader.GetString(0) + ")\n");
+                                sb.Append(reader.GetString(1) + "   (" + reader.GetString(0) + ")\n");
                                 //sb.AppendLine(string.Format("{0,-15} | {1,-15}", reader.GetString(1), reader.GetString(0)));
 
                             }
@@ -121,7 +116,7 @@ namespace TgmBot.ConnectionProperties
             {
                 connection.Open();
                 // Изменено: добавляем "*" в запрос для получения всех столбцов
-                using (SqlCommand command = new SqlCommand(tbl == "Accessories" ? $"SELECT TOP 5 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 0)}Id desc;":$"SELECT TOP 5 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 1)}Id desc;", connection))
+                using (SqlCommand command = new SqlCommand(tbl == "Accessories" ? $"SELECT TOP 5 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 0)}Id desc;" : $"SELECT TOP 5 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 1)}Id desc;", connection))
                 {
                     using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {
@@ -149,53 +144,85 @@ namespace TgmBot.ConnectionProperties
 
         public async Task UpdateQuantity(string tbl, string txt)
         {
-            string QuantitySource = null;
-            string QuantityID= null;
-
-            var quantityMap = new Dictionary<string, string>
+            try
             {
-                { "AccessoriesStockQuantity", "TgmBot_Accessories" },
-                { "ProductsStockQuantity", "TgmBot_Products" }
-            };
+                string QuantitySource = null;
+                string QuantityID = null;
 
-            if (quantityMap.ContainsKey(tbl))
-            {
+                var quantityMap = new Dictionary<string, string>
+                {
+                    { "AccessoriesStockQuantity", "TgmBot_Accessories" },
+                    { "ProductsStockQuantity", "TgmBot_Products" }
+                };
+
+                if (!quantityMap.ContainsKey(tbl))
+                    return;
+
                 QuantitySource = quantityMap[tbl];
-                if (QuantitySource == "TgmBot_Accessories") 
+                QuantityID = QuantitySource == "TgmBot_Accessories" ? "[AccessoriesId]" : "[ProductId]";
+
+                string[] parts = txt.Split(',');
+
+                string param1 = parts[0].Trim();
+                string param2 = parts[1].Trim();
+                string param3 = QuantitySource;
+
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    QuantityID = "[AccessoriesId]";
-                }
-                else 
-                {
-                    QuantityID = "[ProductId]";
+                    await connection.OpenAsync();
+
+                    var sqlQ = $"SELECT count(*) FROM {tbl} WHERE {QuantityID} = @setQuantityId;";
+                    bool exists = false;
+
+                    using (SqlCommand command = new SqlCommand(sqlQ, connection))
+                    {
+                        command.Parameters.AddWithValue("@setQuantityId", param1);
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            //exists = reader.HasRows;
+                            var i = 0;
+                            while (await reader.ReadAsync())
+                            {
+                                i = int.Parse(reader[0].ToString());
+                            }
+                            if (i > 0)
+                            {
+                                exists = true;
+                            }
+                        }
+                    }
+
+                    if (exists)
+                    {
+                        sqlQ = $"UPDATE {tbl} SET [Quantity] = [Quantity] + (@setQuantity) WHERE {QuantityID} = @setQuantityId;";
+
+                        //sqlQ = $"UPDATE {tbl} SET[Quantity] = [Quantity] + (@setQuantity)  WHERE [ProductId] = @setQuantityId;";
+
+                        using (SqlCommand commandUPDATE = new SqlCommand(sqlQ, connection))
+                        {
+                            commandUPDATE.Parameters.AddWithValue("@setQuantity", param2);
+                            commandUPDATE.Parameters.AddWithValue("@setQuantityId", param1);
+                            await commandUPDATE.ExecuteNonQueryAsync();
+                        }
+                    }
+                    else
+                    {
+                        sqlQ = $"INSERT INTO {tbl} ([Quantity], {QuantityID}, [QuantitySource]) VALUES (@setQuantity, @setQuantityId, @QuantitySource);";
+                        using (SqlCommand commandInsert = new SqlCommand(sqlQ, connection))
+                        {
+                            commandInsert.Parameters.AddWithValue("@setQuantity", param2);
+                            commandInsert.Parameters.AddWithValue("@setQuantityId", param1);
+                            commandInsert.Parameters.AddWithValue("@QuantitySource", param3);
+                            await commandInsert.ExecuteNonQueryAsync();
+                        }
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return;
-            }
-
-            string[] parts = txt.Split(',');
-
-            string param1 = parts[0].Trim();
-            string param2 = parts[1].Trim();
-            string param3 = QuantitySource;
-
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            { 
-                var sqlQ = $"INSERT INTO {tbl} ([Quantity], {QuantityID}, [QuantitySource]) VALUES (@setQuantity, @setQuantityId, @QuantitySource);";
-
-
-                connection.Open();
-                using (SqlCommand command = new SqlCommand(sqlQ, connection))
-                {
-                    command.Parameters.AddWithValue("@setQuantity", param2);
-                    command.Parameters.AddWithValue("@setQuantityId", param1);
-                    command.Parameters.AddWithValue("@QuantitySource", param3);
-                    await command.ExecuteNonQueryAsync();
-                }
+                Console.WriteLine($"Ошибка при обновлении: {ex.Message}");
+                // Можно пробросить или логировать
             }
         }
-
     }
 }

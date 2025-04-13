@@ -57,20 +57,21 @@ namespace TgmBot.Data
         public static async Task<bool> GetValidationQuantity(string txt, string tbl)
         {
             bool check = false;
-            //string pattern = @"^\d+\s*,\s*\d+(\.\d+)?$";
-            string pattern = @"^\d+(\.\d+)?,\s*\d+(\.\d+)?$";
+
+            // Регулярное выражение: первая часть - положительное число, вторая часть - положительное или отрицательное число
+            string pattern = @"^\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?$";
 
             Match match = Regex.Match(txt, pattern);
 
-            // Возвращаем результат проверки
             check = match.Success;
 
             if (check)
             {
                 Repository repository = new Repository();
-                 await repository.UpdateQuantity(tbl, txt);
+                await repository.UpdateQuantity(tbl, txt);
             }
             return check;
         }
+
     }
 }
