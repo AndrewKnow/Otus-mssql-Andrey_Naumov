@@ -123,78 +123,90 @@ END;
 --Запуск процедуры обработает сообщения из очереди, просуммирует количество товаров ReportProducts.
 
 --drop PROCEDURE [uspProcessMessagesFromQueue]
-CREATE PROCEDURE [dbo].[uspProcessMessagesFromQueue]
-AS
-BEGIN
-    DECLARE @conversationHandle UNIQUEIDENTIFIER;
-    DECLARE @messageTypeName SYSNAME;
-    DECLARE @messageBody XML;
+--CREATE PROCEDURE [dbo].[uspProcessMessagesFromQueue]
+--AS
+--BEGIN
+--    DECLARE @conversationHandle UNIQUEIDENTIFIER;
+--    DECLARE @messageTypeName SYSNAME;
+--    DECLARE @messageBody XML;
 
-    BEGIN TRANSACTION;
+--    BEGIN TRANSACTION;
 
-    -- Ожидаем одно сообщение из очереди
-    WAITFOR (
-        RECEIVE TOP(1)
-            @conversationHandle = conversation_handle,
-            @messageTypeName = message_type_name,
-            @messageBody = CAST(message_body AS XML)
-        FROM [Queue_BrokerForReport]
-    ), TIMEOUT 1000;
+--    -- Ожидаем одно сообщение из очереди
+--    WAITFOR (
+--        RECEIVE TOP(1)
+--            @conversationHandle = conversation_handle,
+--            @messageTypeName = message_type_name,
+--            @messageBody = CAST(message_body AS XML)
+--        FROM [Queue_BrokerForReport]
+--    ), TIMEOUT 1000;
 
-    -- Если сообщения нет, выходим
-    IF @@ROWCOUNT = 0
-    BEGIN
-        COMMIT TRANSACTION;
-        RETURN;
-    END
+--    -- Если сообщения нет, выходим
+--    IF @@ROWCOUNT = 0
+--    BEGIN
+--        COMMIT TRANSACTION;
+--        RETURN;
+--    END
 
-    -- Обрабатываем сообщение
-    IF @messageTypeName = N'http://schemas.microsoft.com/SQL/ServiceBroker/EndDialog'
-    BEGIN
-        END CONVERSATION @conversationHandle;
-        COMMIT TRANSACTION;
-        RETURN;
-    END
+--    -- Обрабатываем сообщение
+--    IF @messageTypeName = N'http://schemas.microsoft.com/SQL/ServiceBroker/EndDialog'
+--    BEGIN
+--        END CONVERSATION @conversationHandle;
+--        COMMIT TRANSACTION;
+--        RETURN;
+--    END
 
-    DECLARE @ProductId INT;
-    DECLARE @Quantity INT;
+--    DECLARE @ProductId INT;
+--    DECLARE @Quantity INT;
 
-    -- Извлекаем данные из XML
-    SELECT
-        @ProductId = @messageBody.value('(/root/ProductId)[1]', 'INT'),
-        @Quantity = @messageBody.value('(/root/Quantity)[1]', 'INT');
+--    -- Извлекаем данные из XML
+--    SELECT
+--        @ProductId = @messageBody.value('(/root/ProductId)[1]', 'INT'),
+--        @Quantity = @messageBody.value('(/root/Quantity)[1]', 'INT');
 
-    -- Обновляем количество товара в таблице ReportProducts
-    UPDATE [dbo].[ReportProducts]
-    SET TotalQuantity = ISNULL(TotalQuantity, 0) + @Quantity
-    WHERE ProductId = @ProductId;
+--    -- Обновляем количество товара в таблице ReportProducts
+--    UPDATE [dbo].[ReportProducts]
+--    SET TotalQuantity = ISNULL(TotalQuantity, 0) + @Quantity
+--    WHERE ProductId = @ProductId;
 
-    -- Если товар не найден, добавляем новый
-    IF @@ROWCOUNT = 0
-    BEGIN
-        INSERT INTO [dbo].[ReportProducts] (ProductId, TotalQuantity)
-        VALUES (@ProductId, @Quantity);
-    END
+--    -- Если товар не найден, добавляем новый
+--    IF @@ROWCOUNT = 0
+--    BEGIN
+--        INSERT INTO [dbo].[ReportProducts] (ProductId, TotalQuantity)
+--        VALUES (@ProductId, @Quantity);
+--    END
 
-    -- Завершаем диалог
-    END CONVERSATION @conversationHandle;
+--    -- Завершаем диалог
+--    END CONVERSATION @conversationHandle;
 
-    COMMIT TRANSACTION;
-END;
+--    COMMIT TRANSACTION;
+--END;
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Доработка процедуры
+---- Доработка процедуры
+--USE [WarehouseForAutoTourism]
+--GO
+
+/****** Object:  StoredProcedure [dbo].[uspProcessMessagesFromQueue]    Script Date: 13.04.2025 18:40:43 ******/
 USE [WarehouseForAutoTourism]
 GO
 
-/****** Object:  StoredProcedure [dbo].[uspProcessMessagesFromQueue]    Script Date: 13.04.2025 18:40:43 ******/
+/****** Object:  StoredProcedure [dbo].[uspProcessMessagesFromQueue]    Script Date: 13.04.2025 18:59:00 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
+
+
+
+
 --drop PROCEDURE [uspProcessMessagesFromQueue]
-ALTER PROCEDURE [dbo].[uspProcessMessagesFromQueue]
+CREATE PROCEDURE [dbo].[uspProcessMessagesFromQueue]
 AS
 BEGIN
     DECLARE @conversationHandle UNIQUEIDENTIFIER;
@@ -241,7 +253,7 @@ BEGIN
 
         -- Обновляем количество товара в таблице ReportProducts
         UPDATE [dbo].[ReportProducts]
-        SET TotalQuantity = ISNULL(TotalQuantity, 0) + @Quantity
+        SET TotalQuantity = @Quantity -- ISNULL(TotalQuantity, 0) + @Quantity
         WHERE ProductId = @ProductId;
 
         -- Если товар не найден, добавляем новый
@@ -259,7 +271,7 @@ BEGIN
 
         -- Обновляем количество аксессуаров в таблице ReportAccessories
         UPDATE [dbo].[ReportAccessories]
-        SET TotalQuantity = ISNULL(TotalQuantity, 0) + @Quantity
+        SET TotalQuantity = @Quantity --ISNULL(TotalQuantity, 0) + @Quantity
         WHERE AccessoriesId = @AccessoriesId;
 
         -- Если аксессуар не найден, добавляем новый
@@ -275,10 +287,13 @@ BEGIN
 
     COMMIT TRANSACTION;
 END;
+GO
 
 
--- создание триггеров на таблице
-USE [WarehouseForAutoTourism]
+
+
+-- создание триггеров на таблице [AccessoriesStockQuantity]
+USE [WarehouseForAutoTourism] 
 GO
 
 /****** Object:  Trigger [dbo].[trgSendMessageOnInsertAccessories]    Script Date: 13.04.2025 18:47:08 ******/
@@ -288,7 +303,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
---Триггер [trgSendMessageOnInsert] отправляет сообщение в очередь, процедура [uspProcessMessagesFromQueue] должна запустить обработку сообщения
+--Триггер [trgSendMessageOnInsertAccessories] отправляет сообщение в очередь, процедура [uspProcessMessagesFromQueue] должна запустить обработку сообщения
 --drop TRIGGER [trgSendMessageOnInsert]
 CREATE TRIGGER [dbo].[trgSendMessageOnInsertAccessories]
 ON [dbo].[AccessoriesStockQuantity]
@@ -345,7 +360,7 @@ GO
 
 
 
---Триггер [trgSendMessageOnInsert] отправляет сообщение в очередь, процедура [uspProcessMessagesFromQueue] должна запустить обработку сообщения
+--Триггер [trgSendMessageOnUpdateAccessories] отправляет сообщение в очередь, процедура [uspProcessMessagesFromQueue] должна запустить обработку сообщения
 --drop TRIGGER [trgSendMessageOnInsert]
 CREATE TRIGGER [dbo].[trgSendMessageOnUpdateAccessories]
 ON [dbo].[AccessoriesStockQuantity]
@@ -388,4 +403,54 @@ GO
 
 ALTER TABLE [dbo].[AccessoriesStockQuantity] ENABLE TRIGGER [trgSendMessageOnUpdateAccessories]
 GO
+
+
+
+
+--Триггер [trgSendMessageOnUpdate] отправляет сообщение в очередь, процедура [uspProcessMessagesFromQueue] должна запустить обработку сообщения
+--drop TRIGGER [trgSendMessageOnUpdate]
+CREATE TRIGGER [dbo].[trgSendMessageOnUpdate]
+ON [dbo].[ProductsStockQuantity]
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @ProductId INT;
+    DECLARE @Quantity INT;
+    DECLARE @handle UNIQUEIDENTIFIER;
+
+
+    SELECT @ProductId = i.ProductId, @Quantity = i.Quantity
+    FROM inserted i
+
+    IF @ProductId IS NULL
+    BEGIN
+        RETURN;
+    END
+
+    BEGIN DIALOG CONVERSATION @handle
+        FROM SERVICE [Service_BrokerForReport]
+        TO SERVICE 'Service_BrokerForReport'
+        ON CONTRACT [Contract_BrokerForReport]
+        WITH ENCRYPTION = OFF;
+
+    DECLARE @message XML;
+    SET @message = '<root><ProductId>' + CAST(@ProductId AS NVARCHAR(255)) + '</ProductId><Quantity>' + CAST(@Quantity AS NVARCHAR(255)) + '</Quantity></root>';
+
+    SEND ON CONVERSATION @handle
+    MESSAGE TYPE [MessageType_BrokerForReport] (@message);
+    
+    -- Завершаение диалога
+    END CONVERSATION @handle;
+
+END;
+
+GO
+
+ALTER TABLE [dbo].[ProductsStockQuantity] ENABLE TRIGGER [trgSendMessageOnUpdate]
+GO
+
+
+
 
