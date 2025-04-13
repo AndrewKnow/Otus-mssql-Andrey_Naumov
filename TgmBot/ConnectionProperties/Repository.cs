@@ -74,49 +74,7 @@ namespace TgmBot.ConnectionProperties
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT TOP 20 Brand, Model FROM CARS ORDER BY CarModelId ASC;", connection))
-                {
-                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
-                    {
-                        if (reader.HasRows)
-                        {
-
-                            // Вывод заголовков столбцов
-                            sb.AppendLine(string.Format("{0,10} | {1,-10}", "Model", "Brand"));
-                            sb.AppendLine(new string('-', 35)); // Разделитель
-
-                            while (reader.Read())
-                            {
-                                // Length
-
-                                int a = reader.GetString(0).Length;
-                                int b = reader.GetString(1).Length;
-                                char symbol = '\t';
-
-                                string repeated = new string(symbol, 25 - a);
-
-
-                                //Telegram не поддерживает выравнивание текста с использованием пробелов
-                                sb.Append(reader.GetString(1) + "   (" + reader.GetString(0) + ")\n");
-                                //sb.AppendLine(string.Format("{0,-15} | {1,-15}", reader.GetString(1), reader.GetString(0)));
-
-                            }
-                        }
-                    }
-                }
-            }
-
-            return sb.ToString();
-        }
-
-        public async Task<string> SelectTop5(string tbl)
-        {
-            StringBuilder sb = new StringBuilder();
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                // Изменено: добавляем "*" в запрос для получения всех столбцов
-                using (SqlCommand command = new SqlCommand(tbl == "Accessories" ? $"SELECT TOP 5 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 0)}Id desc;" : $"SELECT TOP 5 * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 1)}Id desc;", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM CARS ORDER BY CarModelId ASC;", connection))
                 {
                     using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {
@@ -135,6 +93,136 @@ namespace TgmBot.ConnectionProperties
                                 }
                                 sb.AppendLine("\n------------------");
                             }
+
+                            //// Вывод заголовков столбцов
+                            //sb.AppendLine(string.Format("{0,10} | {1,-10}", "Model", "Brand"));
+                            //sb.AppendLine(new string('-', 35)); // Разделитель
+
+                            //while (reader.Read())
+                            //{
+                            //    // Length
+
+                            //    int a = reader.GetString(0).Length;
+                            //    int b = reader.GetString(1).Length;
+                            //    char symbol = '\t';
+
+                            //    string repeated = new string(symbol, 25 - a);
+
+
+                            //    //Telegram не поддерживает выравнивание текста с использованием пробелов
+                            //    sb.Append(reader.GetString(1) + "   (" + reader.GetString(0) + ")\n");
+                            //    //sb.AppendLine(string.Format("{0,-15} | {1,-15}", reader.GetString(1), reader.GetString(0)));
+
+                            //}
+                        }
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
+
+
+        public async Task<string> SelectCategory()
+        {
+            StringBuilder sb = new StringBuilder();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                // Изменено: добавляем "*" в запрос для получения всех столбцов
+                using (SqlCommand command = new SqlCommand("SELECT * FROM Categories", connection))
+                {
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (reader.HasRows)
+                        {
+                            // Читаем столбцы
+                            while (await reader.ReadAsync())
+                            {
+                                // Для каждого столбца в строке
+                                for (int i = 0; i < reader.FieldCount; i++)
+                                {
+                                    string columnName = reader.GetName(i); // Имя столбца
+                                    var columnValue = reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString(); // Значение столбца
+
+                                    sb.AppendLine($"{columnName} - {columnValue}"); // Формируем строку "заголовок - значение"
+                                }
+                                sb.AppendLine("\n------------------");
+                            }
+                        }
+                    }
+                }
+            }
+            return sb.ToString();
+        }
+
+        public async Task<string> SelectTop5(string tbl)
+        {
+            StringBuilder sb = new StringBuilder();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                // Изменено: добавляем "*" в запрос для получения всех столбцов
+                using (SqlCommand command = new SqlCommand(tbl == "Accessories" ? $"SELECT * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 0)}Id asc;" : $"SELECT * FROM {tbl} Order By {tbl.Substring(0, tbl.Length - 1)}Id asc;", connection))
+                {
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (reader.HasRows)
+                        {
+                            // Читаем столбцы
+                            while (await reader.ReadAsync())
+                            {
+                                // Для каждого столбца в строке
+                                for (int i = 0; i < reader.FieldCount; i++)
+                                {
+                                    string columnName = reader.GetName(i); // Имя столбца
+                                    var columnValue = reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString(); // Значение столбца
+
+                                    sb.AppendLine($"{columnName} - {columnValue}"); // Формируем строку "заголовок - значение"
+                                }
+                                sb.AppendLine("\n------------------");
+                            }
+                        }
+                    }
+                }
+            }
+            return sb.ToString();
+        }
+
+
+        public async Task<string> Reports(string tbl)
+        {
+            StringBuilder sb = new StringBuilder();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var sqlQ = "";
+                if (tbl == "ReportProducts")
+                {
+                    sqlQ = $"SELECT ROW_NUMBER() OVER (ORDER BY p.ProductName) AS [№], p.ProductId ID, p.ProductName Название, t.TotalQuantity Количество FROM {tbl} t JOIN Products p ON p.ProductId = t.ProductId ORDER BY p.ProductName;";
+                }
+                else if (tbl == "ReportAccessories")
+                {
+                    sqlQ = $"SELECT ROW_NUMBER() OVER (ORDER BY p.AccessoryName) AS [№], p.AccessoriesId ID, p.AccessoryName Название, t.TotalQuantity Количество FROM {tbl} t JOIN Accessories p ON p.AccessoriesId = t.AccessoriesId ORDER BY p.AccessoryName;";
+                }
+
+
+                using (SqlCommand command = new SqlCommand(sqlQ, connection))
+                {
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        
+                        while (await reader.ReadAsync())
+                        {
+                            // Для каждого столбца в строке
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                string columnName = reader.GetName(i); // Имя столбца
+                                var columnValue = reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString(); // Значение столбца
+
+                                sb.AppendLine($"{columnName} - {columnValue}"); // Формируем строку "заголовок - значение"
+                            }
+                            sb.AppendLine("\n------------------");
                         }
                     }
                 }

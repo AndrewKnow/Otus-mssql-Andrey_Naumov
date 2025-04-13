@@ -17,33 +17,12 @@ CREATE TABLE [dbo].[ReportProducts] (
 USE [WarehouseForAutoTourism]
 GO
 
-/****** Object:  Table [dbo].[ReportAccessories]    Script Date: 13.04.2025 18:50:04 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[ReportAccessories](
-	[AccessoriesId] [int] NOT NULL,
-	[TotalQuantity] [int] NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[AccessoriesId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[ReportAccessories]  WITH CHECK ADD  CONSTRAINT [FK_ReportAccessories_Accessories] FOREIGN KEY([AccessoriesId])
-REFERENCES [dbo].[Accessories] ([AccessoriesId])
-GO
-
-ALTER TABLE [dbo].[ReportAccessories] CHECK CONSTRAINT [FK_ReportAccessories_Accessories]
-GO
-
-
-
-
+CREATE TABLE [dbo].[ReportAccessories] (
+    [AccessoriesId] INT NOT NULL,
+    [TotalQuantity] INT NOT NULL,
+    PRIMARY KEY ([ProductId]),
+    CONSTRAINT FK_ReportAccessories_Accessories FOREIGN KEY (AccessoriesId) REFERENCES [Accessories]([AccessoriesId])
+)
 
 ---------------------------------------------------------------------------------------------------------------------
 -----------------------------------Создание службы Service Broker----------------------------------------------------

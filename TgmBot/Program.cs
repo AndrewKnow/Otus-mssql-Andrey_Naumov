@@ -126,6 +126,9 @@ namespace TgmBot
                         Accessories.InsertAccessories = false;
                     }
 
+
+
+
                     if (update.Type == UpdateType.Message)
                     {
                         var userId = message.From.Id;
@@ -156,7 +159,7 @@ namespace TgmBot
 
                             break;
 
-                            case "Вывести TOP 20 авто":
+                            case "Вывести авто":
 
                                 
                                 Task<string> sb = repository.SelectTop20Cars();
@@ -165,14 +168,14 @@ namespace TgmBot
 
                             break;
 
-                            case "Вывести TOP 5 товаров":
+                            case "Вывести товары":
  
                                 Task<string> sb2 = repository.SelectTop5("Products");
                                 string resultSB2 = await sb2;
                                 await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB2);
                                 break;
 
-                            case "Вывести TOP 5 аксессуаров":
+                            case "Вывести аксессуары":
    
                                 Task<string> sb3 = repository.SelectTop5("Accessories");
                                 string resultSB3 = await sb3;
@@ -192,9 +195,24 @@ namespace TgmBot
                             break;
 
                             case "Количество товара на складе":
+
+                                Task<string> sb4 = repository.Reports("ReportProducts");
+                                string resultSB4 = await sb4;
+                                await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB4);
+
                             break;
 
                             case "Количество аксессуаров на складе":
+
+                                Task<string> sb5 = repository.Reports("ReportAccessories");
+                                string resultSB5 = await sb5;
+                                await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB5);
+                            break;
+
+                            case "Вывести категории":
+                                Task<string> sb6 = repository.SelectCategory();
+                                string resultSB6 = await sb6;
+                                await botClient.SendMessage(chatId: message.Chat.Id, text: resultSB6);
                             break;
                         }
                     }
@@ -232,9 +250,10 @@ namespace TgmBot
                             "Создать запись в аксессуарах"
                         },
                         [
-                            "Вывести TOP 5 товаров",
-                            "Вывести TOP 5 аксессуаров",
-                            "Вывести TOP 20 авто"
+                            "Вывести категории",
+                            "Вывести товары",
+                            "Вывести аксессуары",
+                            "Вывести авто"
                         ],
                         [
                             "Внести/Списать количество по Id товара",

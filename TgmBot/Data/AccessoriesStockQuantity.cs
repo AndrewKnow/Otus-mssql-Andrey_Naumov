@@ -9,5 +9,6 @@ namespace TgmBot.Data
     public class AccessoriesStockQuantity
     {
         public static bool UpdateAccessoriesQuantity { get; set; }
+
     }
 }

@@ -16,7 +16,7 @@ namespace TgmBot.Data
         {
             bool check = false;
             // Шаблон регулярного выражения
-            string pattern = @"^[\w\s]+,\s*\d+\s*,\s*\d+(?:\.\d+)?\s*,[\w\s]+$";
+            string pattern = @"^""?[\w\s]+""?,\s*\d+\s*,\s*\d+(?:\.\d+)?\s*,\s*[\w\s]+$";
 
             // Создаем объект Regex и проверяем совпадение
             Match match = Regex.Match(txt, pattern);
@@ -32,6 +32,9 @@ namespace TgmBot.Data
 
             return check;
         }
+
+
+
 
         public static async Task<bool> GetValidationAccessories(string txt)
         {
